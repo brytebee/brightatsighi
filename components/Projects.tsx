@@ -1,6 +1,7 @@
 "use client";
 
 import { portfolioData } from "@/lib/data";
+import NextImage from "next/image";
 
 export default function Projects() {
   const { projects } = portfolioData;
@@ -75,17 +76,29 @@ export default function Projects() {
 
               {/* Project Visual - Right Side */}
               <div className="lg:col-span-7 relative">
-                {/* Abstract Visual Placeholder since we don't have images yet */}
                 <div className="aspect-video bg-surface border border-border rounded-lg overflow-hidden relative group-hover:border-accent/30 transition-all duration-500">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-border via-surface to-surface"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-mono text-foreground text-6xl opacity-10 font-bold">
-                      {project.title.substring(0, 2).toUpperCase()}
-                    </span>
-                  </div>
-
-                  {/* Decorative Grid */}
-                  <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                  {project.image ? (
+                    <div className="relative w-full h-full">
+                      <NextImage
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      {/* Overlay to ensure text/design consistency on hover or dark mode */}
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300" />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-border via-surface to-surface"></div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="font-mono text-foreground text-6xl opacity-10 font-bold">
+                          {project.title.substring(0, 2).toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

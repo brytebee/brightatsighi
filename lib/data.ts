@@ -26,6 +26,7 @@ export interface PortfolioData {
     link?: string;
     repo?: string;
     metrics?: string;
+    image?: string;
   }[];
   recommendations: {
     name: string;
@@ -33,9 +34,16 @@ export interface PortfolioData {
     company: string;
     text: string;
   }[];
+  recommendationsExternalLink?: string;
   callToAction: {
     text: string;
     email: string;
+  };
+  chatData: {
+    whatsapp: string;
+    telegram: string;
+    discord: string;
+    linkedin: string;
   };
 }
 
@@ -158,6 +166,7 @@ export const portfolioData: PortfolioData = {
       technologies: ["Next.js", "Paystack", "Geolocation API", "Node.js"],
       metrics: "Delivered in 3 months with 100% currency accuracy",
       link: "https://www.ohiolelagos.com/",
+      image: "/ohiole-lagos.png",
     },
     {
       title: "School Test System",
@@ -166,6 +175,7 @@ export const portfolioData: PortfolioData = {
       technologies: ["Full Stack", "Testing Platform", "Educational Tech"],
       metrics: "Comprehensive solution for schools",
       link: "https://school-test-system.vercel.app/",
+      image: "/school-test-system.png",
     },
     {
       title: "Asusu Fintech",
@@ -181,6 +191,7 @@ export const portfolioData: PortfolioData = {
       ],
       metrics: "High availability architecture",
       link: "https://www.asusu.biz/",
+      image: "/asusu-fintech.png",
     },
   ],
   recommendations: [
@@ -203,8 +214,16 @@ export const portfolioData: PortfolioData = {
       text: "One thing that stood out about him was his in-depth knowledge about technical concepts. Bright loves to deliver quality and clean code and will be a valuable asset to his employer.",
     },
   ],
+  recommendationsExternalLink:
+    "https://www.linkedin.com/in/brytebee/details/recommendations/?detailScreenTabIndex=0",
   callToAction: {
     text: "Let's build scalable solutions together.",
-    email: "contact@brightatsighi.com",
+    email: "brytebee@gmail.com",
+  },
+  chatData: {
+    whatsapp: "https://wa.me/+2347066324306",
+    telegram: "https://t.me/brytebee",
+    discord: "https://discord.gg/brytebee",
+    linkedin: "https://linkedin.com/in/brytebee",
   },
 };
