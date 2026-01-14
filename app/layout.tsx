@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   openGraph: {
-    title: "Senior Full Stack Dev | Portfolio",
+    title: "Bright Atsighi | Portfolio",
     description:
-      "Data-driven portfolio representing 6+ years of specialized experience in scalable backend architectures and fintech.",
+      "Senior Full Stack Engineer specializing in scalable backend architectures, fintech integrations, and DevOps.",
     url: "https://brytebee.com",
     siteName: "Bright Atsighi Portfolio",
     images: [
