@@ -40,6 +40,13 @@ export interface PortfolioData {
     text: string;
     email: string;
   };
+  writing: {
+    title: string;
+    description: string;
+    link: string;
+    date: string;
+    readTime?: string;
+  }[];
   chatData: {
     whatsapp: string;
     telegram: string;
@@ -220,6 +227,32 @@ export const portfolioData: PortfolioData = {
   ],
   recommendationsExternalLink:
     "https://www.linkedin.com/in/brytebee/details/recommendations/?detailScreenTabIndex=0",
+  writing: [
+    {
+      title: "Understanding Scalable Backend Architectures",
+      description:
+        "A deep dive into building systems that handle high concurrency and large data volumes using Python and Go.",
+      link: "https://medium.com/@brytebee",
+      date: "Oct 2024",
+      readTime: "5 min read",
+    },
+    {
+      title: "Optimizing Fintech Integrations",
+      description:
+        "Best practices for integrating payment gateways and ensuring transaction security in financial applications.",
+      link: "https://medium.com/@brytebee",
+      date: "Sep 2024",
+      readTime: "7 min read",
+    },
+    {
+      title: "The Power of Docker in DevOps",
+      description:
+        "How containerization simplifies deployment pipelines and ensures environment consistency.",
+      link: "https://medium.com/@brytebee",
+      date: "Aug 2024",
+      readTime: "4 min read",
+    },
+  ],
   callToAction: {
     text: "Let's build scalable solutions together.",
     email: "brytebee@gmail.com",
