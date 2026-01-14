@@ -1,6 +1,7 @@
 "use client";
 
 import { portfolioData } from "@/lib/data";
+import Image from "next/image";
 
 export default function Recommendations() {
   const { recommendations } = portfolioData;
@@ -25,8 +26,17 @@ export default function Recommendations() {
                 {rec.text}
               </p>
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-foreground font-bold">
-                  {rec.name[0]}
+                <div className="relative w-10 h-10 rounded-full overflow-hidden bg-secondary flex items-center justify-center text-foreground font-bold shrink-0">
+                  {rec.image ? (
+                    <Image
+                      src={rec.image}
+                      alt={rec.name}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    rec.name[0]
+                  )}
                 </div>
                 <div>
                   <h5 className="text-foreground font-bold text-sm">

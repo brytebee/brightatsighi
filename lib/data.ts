@@ -33,6 +33,7 @@ export interface PortfolioData {
     role: string;
     company: string;
     text: string;
+    image?: string;
   }[];
   recommendationsExternalLink?: string;
   callToAction: {
@@ -200,18 +201,21 @@ export const portfolioData: PortfolioData = {
       role: "Founder/CEO",
       company: "JUUBIX",
       text: "Bright is an amazing team player, leader and strategist. He has exceptional listening skills which makes him outshine his peers in many tasks. He is committed, and has a good problem solving ideas and capabilities.",
+      image: "/images/susan.jpeg",
     },
     {
       name: "Hillary Okello",
       role: "Full-Stack Software Developer",
       company: "Microverse",
       text: "I got to learn a lot from him especially about solving coding challenges. He is a great collaborator, he inspired me to keep working hard to become a better developer.",
+      image: "/images/hillary.jpeg",
     },
     {
       name: "Temitope Akinlade",
       role: "Software Engineer",
       company: "Colleague",
       text: "One thing that stood out about him was his in-depth knowledge about technical concepts. Bright loves to deliver quality and clean code and will be a valuable asset to his employer.",
+      image: "/images/temitope.jpeg",
     },
   ],
   recommendationsExternalLink:
