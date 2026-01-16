@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Profile {
+  id       String @id @default(uuid())
+  name     String
+  role     String
+  tagline  String
+  summary  String
+  location String
+  email    String
+
+  // JSON field for social links: { platform, url, icon }[]
+  socials Json
+
+  // Call to action section
+  ctaText  String
+  ctaEmail String
+
+  // Chat handles
+  whatsapp String?
+  telegram String?
+  discord  String?
+  linkedin String?
+
+  recommendationsExternalLink String?
+
+  updatedAt DateTime @updatedAt
+}
+
+model SkillCategory {
+  id           String @id @default(uuid())
+  category     String
+  // JSON field for items array: string[]
+  items        Json
+  displayOrder Int    @default(0)
+}
+
+model Experience {
+  id           String  @id @default(uuid())
+  company      String
+  role         String
+  period       String
+  // JSON field for description points: string[]
+  description  Json
+  link         String?
+  displayOrder Int     @default(0)
+}
+
+model Project {
+  id           String  @id @default(uuid())
+  title        String
+  description  String
+  // JSON field for technologies: string[]
+  technologies Json
+  metrics      String?
+  link         String?
+  repo         String?
+  image        String?
+  displayOrder Int     @default(0)
+}
+
+model Recommendation {
+  id           String  @id @default(uuid())
+  name         String
+  role         String
+  company      String
+  text         String
+  image        String?
+  displayOrder Int     @default(0)
+}
+
+model Writing {
+  id           String  @id @default(uuid())
+  title        String
+  description  String
+  link         String? // Optional if internal
+  content      String? // For internal writing (Medium-like)
+  published    Boolean @default(false)
+  date         String?
+  readTime     String?
+  displayOrder Int     @default(0)
+}

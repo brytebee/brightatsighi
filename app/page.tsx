@@ -10,13 +10,11 @@ import { Metadata } from "next";
 export const revalidate = 86400; // Revalidate every 24 hours
 
 export const metadata: Metadata = {
-  description: `Data-driven portfolio representing ${
-    new Date().getFullYear() - 2020
-  }+ years of specialized experience in scalable backend architectures and fintech.`,
+  title: "Bright Atsighi | Senior Full Stack Engineer",
+  description: `Senior-level Full Stack Engineer with over 5 years of experience specializing in scalable backend architectures, fintech integrations, and DevOps.`,
   openGraph: {
-    description: `Data-driven portfolio representing ${
-      new Date().getFullYear() - 2020
-    }+ years of specialized experience in scalable backend architectures and fintech.`,
+    title: "Bright Atsighi | Senior Full Stack Engineer",
+    description: `Senior-level Full Stack Engineer with over 5 years of experience specializing in scalable backend architectures, fintech integrations, and DevOps.`,
   },
 };
 
