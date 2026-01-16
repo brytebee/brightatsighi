@@ -16,11 +16,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://brightatsighi.vercel.app"),
+  title: {
+    default: "Bright Atsighi | Senior Full Stack Engineer",
+    template: "%s | Bright Atsighi",
+  },
+  description:
+    "Senior Full Stack Engineer specializing in scalable backend architectures, fintech integrations, and DevOps.",
   openGraph: {
-    title: "Bright Atsighi | Portfolio",
+    title: "Bright Atsighi | Senior Full Stack Engineer",
     description:
       "Senior Full Stack Engineer specializing in scalable backend architectures, fintech integrations, and DevOps.",
-    url: "https://brytebee.com",
+    url: "https://brightatsighi.vercel.app",
     siteName: "Bright Atsighi Portfolio",
     images: [
       {
@@ -35,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bright Atsighi | Senior Full Stack Dev",
+    title: "Bright Atsighi | Senior Full Stack Engineer",
     description:
       "Specializing in scalable backend architectures and fintech integrations.",
     images: ["/opengraph-image.png"],
