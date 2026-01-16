@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "Bright Atsighi Portfolio",
     images: [
       {
-        url: "/opengraph-image.png",
+        url: "https://res.cloudinary.com/dprkvmhld/image/upload/v1768597617/opengraph-image_zvwn6a.png",
         width: 1200,
         height: 630,
         alt: "Bright Atsighi | Senior Full Stack Engineer",
@@ -45,7 +45,9 @@ export const metadata: Metadata = {
     title: "Bright Atsighi | Senior Full Stack Engineer",
     description:
       "Specializing in scalable backend architectures and fintech integrations.",
-    images: ["/opengraph-image.png"],
+    images: [
+      "https://res.cloudinary.com/dprkvmhld/image/upload/v1768597617/opengraph-image_zvwn6a.png",
+    ],
     creator: "@brytebee",
   },
   icons: {
