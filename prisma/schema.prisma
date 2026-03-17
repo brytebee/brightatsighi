@@ -79,13 +79,38 @@ model Recommendation {
 }
 
 model Writing {
-  id           String  @id @default(uuid())
+  id           String   @id @default(uuid())
   title        String
   description  String
+  category     String   @default("tech") // "tech", "esports", "fintech-lab"
   link         String? // Optional if internal
   content      String? // For internal writing (Medium-like)
-  published    Boolean @default(false)
-  date         String?
+  published    Boolean  @default(false)
+  status       String   @default("PENDING") // "PENDING", "APPROVED"
+  isAutomated  Boolean  @default(false)
+  sourceUrl    String?
+  image        String?
+  date         DateTime @default(now())
   readTime     String?
-  displayOrder Int     @default(0)
+  displayOrder Int      @default(0)
+  isBroadcasted Boolean @default(false)
+  broadcastLogs Json?   // [{ platform: string, timestamp: DateTime, url?: string, success: boolean }]
+}
+
+model AgentLog {
+  id        String   @id @default(uuid())
+  agentName String
+  action    String
+  status    String
+  message   String?
+  timestamp DateTime @default(now())
+}
+
+model AgentHeartbeat {
+  id        String   @id @default(uuid())
+  agentName String
+  task      String
+  status    String
+  evidence  String?
+  timestamp DateTime @default(now())
 }

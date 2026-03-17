@@ -44,6 +44,13 @@ export default function AdminLayout({
           >
             Writing
           </Link>
+          <div className="h-px bg-border my-2"></div>
+          <Link
+            href="/admin/intelligence"
+            className="block p-2 rounded bg-eagles-green/10 text-eagles-green hover:bg-eagles-green/20 font-bold border border-eagles-green/20"
+          >
+            🦅 Mission Control
+          </Link>
         </nav>
 
         <div className="absolute bottom-6 left-6 w-52">
@@ -60,7 +67,7 @@ export default function AdminLayout({
           </form>
         </div>
       </aside>
-      <main className="flex-1 p-8 bg-background">{children}</main>
+      <main className="flex-1 p-0 md:p-8 bg-dark-pitch">{children}</main>
     </div>
   );
 }

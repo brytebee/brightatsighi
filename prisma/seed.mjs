@@ -1,12 +1,20 @@
-import { prisma } from "../lib/prisma";
-import { portfolioData } from "../lib/data";
+import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import pg from "pg";
+import dotenv from "dotenv";
+import { portfolioData } from "./data.mjs"; // I will create this mjs version of data
+
+dotenv.config();
+
+const { Pool } = pg;
+const connectionString = process.env.DATABASE_URL;
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("Start seeding...");
 
-  // 1. Seed Profile
-  // We upsert ensuring only one profile exists usually, or just create fresh.
-  // For simplicity, we'll delete all and create new.
   await prisma.profile.deleteMany();
   await prisma.profile.create({
     data: {
@@ -27,7 +35,6 @@ async function main() {
     },
   });
 
-  // 2. Seed Skills
   await prisma.skillCategory.deleteMany();
   for (const skill of portfolioData.skills) {
     await prisma.skillCategory.create({
@@ -38,7 +45,6 @@ async function main() {
     });
   }
 
-  // 3. Seed Experience
   await prisma.experience.deleteMany();
   for (const exp of portfolioData.experience) {
     await prisma.experience.create({
@@ -52,7 +58,6 @@ async function main() {
     });
   }
 
-  // 4. Seed Projects
   await prisma.project.deleteMany();
   for (const proj of portfolioData.projects) {
     await prisma.project.create({
@@ -68,7 +73,6 @@ async function main() {
     });
   }
 
-  // 5. Seed Recommendations
   await prisma.recommendation.deleteMany();
   for (const rec of portfolioData.recommendations) {
     await prisma.recommendation.create({
@@ -82,7 +86,6 @@ async function main() {
     });
   }
 
-  // 6. Seed Writing
   await prisma.writing.deleteMany();
   if (portfolioData.writing) {
     for (const w of portfolioData.writing) {
@@ -91,10 +94,10 @@ async function main() {
           title: w.title,
           description: w.description,
           link: w.link,
-          date: new Date(w.date), // Convert string to DateTime
+          date: new Date(w.date),
           readTime: w.readTime,
-          category: "tech", // Explicitly marking these as tech posts
-          status: "APPROVED", // Mark existing posts as approved
+          category: "tech",
+          status: "APPROVED",
         },
       });
     }

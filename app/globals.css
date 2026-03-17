@@ -10,6 +10,9 @@
   --color-secondary: var(--secondary);
   --color-border: var(--border);
   --color-surface: var(--surface);
+  --color-eagles-green: #008751;
+  --color-electric-lime: #ccff00;
+  --color-dark-pitch: #0a0f0d;
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
@@ -47,7 +50,9 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 /* Custom Utilities */
