@@ -2,6 +2,8 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { BroadcasterDispatcher } from "@/lib/core/broadcaster";
+import CopySnippet from "@/components/CopySnippet";
 
 async function getReport(id: string) {
   try {
@@ -46,12 +48,40 @@ export default async function IntelligenceDossierPage({
     revalidatePath("/intelligence");
   }
 
+  async function generateSocialAssetsAction(formData: FormData) {
+    "use server";
+    const id = formData.get("id") as string;
+    const report = await getReport(id);
+
+    if (!report) return;
+
+    const dispatcher = new BroadcasterDispatcher();
+    const payload = {
+      title: report.title,
+      description: report.description,
+      content: report.content || "",
+      image: report.image || "",
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/intelligence/${report.id}`,
+    };
+
+    const results = await dispatcher.broadcastAll(payload);
+
+    await (prisma.writing as any).update({
+      where: { id },
+      data: {
+        broadcastLogs: results,
+      },
+    });
+
+    revalidatePath(`/admin/intelligence/${id}`);
+  }
+
   async function approveReportAction(formData: FormData) {
     "use server";
     const id = formData.get("id") as string;
     await (prisma.writing as any).update({
       where: { id },
-      data: { status: "APPROVED", published: true },
+      data: { status: "APPROVED" },
     });
 
     revalidatePath("/admin/intelligence");
@@ -162,23 +192,81 @@ export default async function IntelligenceDossierPage({
               />
             </div>
           </div>
-
-          <div className="flex justify-start">
-            <button
-              type="submit"
-              className="group relative px-14 py-5 bg-transparent overflow-hidden rounded-full border border-white/10 transition-all hover:border-white/30"
-            >
-              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-[0.03] transition-opacity" />
-              <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 group-hover:text-white transition-colors">
-                Save Progress
-              </span>
-            </button>
-          </div>
+            <div className="flex justify-start">
+              <button
+                type="submit"
+                className="group relative px-14 py-5 bg-transparent overflow-hidden rounded-full border border-white/10 transition-all hover:border-white/30"
+              >
+                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-[0.03] transition-opacity" />
+                <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 group-hover:text-white transition-colors">
+                  Save Progress
+                </span>
+              </button>
+            </div>
         </form>
 
-        <div className="mt-32 pt-24 border-t border-white/[0.03]">
+        <section className="mt-32 pt-24 border-t border-white/3 space-y-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div className="space-y-4">
+              <h2 className="text-[11px] font-black uppercase tracking-[0.5em] text-eagles-green">
+                Communications Assets
+              </h2>
+              <p className="text-sm text-gray-500 max-w-xl leading-relaxed font-medium">
+                Repurpose this dossier for social distribution. Content is
+                optimized for character limits and professional engagement.
+              </p>
+            </div>
+
+            <form action={generateSocialAssetsAction}>
+              <input type="hidden" name="id" value={report.id} />
+              <button
+                type="submit"
+                className="group relative px-8 py-4 bg-white/3 overflow-hidden rounded-2xl border border-white/10 transition-all hover:border-white/20 active:scale-95"
+              >
+                <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 group-hover:text-white transition-colors">
+                  {report.broadcastLogs ? "Regenerate Assets" : "Generate Social Intel"}
+                </span>
+              </button>
+            </form>
+          </div>
+
+          <div className="grid grid-cols-1 gap-12 pt-8">
+            {report.broadcastLogs ? (
+              (report.broadcastLogs as any).map((log: any, idx: number) => (
+                <CopySnippet
+                  key={idx}
+                  label={log.platform}
+                  snippet={log.snippet || ""}
+                />
+              ))
+            ) : (
+              <div className="py-20 flex flex-col items-center justify-center border border-dashed border-white/5 rounded-4xl bg-white/1">
+                <div className="w-12 h-12 rounded-full border border-white/5 flex items-center justify-center mb-6">
+                  <svg
+                    className="w-5 h-5 text-gray-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                </div>
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">
+                  Ready for repurposing sequence
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <div className="mt-32 pt-24 border-t border-white/3">
           <div className="relative group max-w-3xl">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-eagles-green/20 to-electric-lime/20 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            <div className="absolute -inset-0.5 bg-linear-to-r from-eagles-green/20 to-electric-lime/20 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
 
             <div className="relative bg-[#0A0A0A] border border-white/5 p-10 md:p-16 rounded-[3rem] backdrop-blur-3xl overflow-hidden">
               {/* Decorative Circuit Pattern */}
@@ -205,7 +293,7 @@ export default async function IntelligenceDossierPage({
                         : "bg-eagles-green text-white hover:scale-105 active:scale-95 shadow-[0_20px_40px_rgba(0,135,81,0.25)]"
                     }`}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-linear-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     <span className="relative z-10 text-[11px] font-black uppercase tracking-[0.4em] whitespace-nowrap">
                       {report.status === "APPROVED"
                         ? "Mission Broadcasted"
