@@ -103,6 +103,7 @@ model AgentLog {
   action    String
   status    String
   message   String?
+  metadata  Json?    // For transaction details or agent-specific data
   timestamp DateTime @default(now())
 }
 
@@ -113,4 +114,14 @@ model AgentHeartbeat {
   status    String
   evidence  String?
   timestamp DateTime @default(now())
+}
+
+model ComplianceAlert {
+  id          String   @id @default(uuid())
+  severity    String   // "LOW", "MEDIUM", "HIGH", "CRITICAL"
+  type        String   // "FRAUD", "AML", "KYC", "VELOCITY"
+  description String
+  metadata    Json?    // Transaction details, risk factors
+  resolved    Boolean  @default(false)
+  timestamp   DateTime @default(now())
 }
