@@ -5,6 +5,7 @@ import Projects from "@/components/Projects";
 import Recommendations from "@/components/Recommendations";
 import Blog from "@/components/Blog";
 import Contact from "@/components/Contact";
+import ScrollReveal from "@/components/ScrollReveal";
 import { Metadata } from "next";
 
 export const revalidate = 86400; // Revalidate every 24 hours
@@ -20,11 +21,24 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="bg-background min-h-screen text-foreground selection:bg-accent selection:text-black">
+    <main 
+      className="bg-background min-h-screen text-foreground selection:bg-accent selection:text-white overflow-x-hidden font-sans transition-colors duration-300 relative w-full"
+      style={{ fontFamily: "'Inter', ui-sans-serif, system-ui, sans-serif" }}
+    >
+      {/* ── Force Inter from Google Fonts ── */}
+      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+      `}</style>
+      
+      <ScrollReveal />
+
       <Hero />
+      <div id="experience">
+        <Experience />
+        <Projects />
+      </div>
       <SkillMatrix />
-      <Experience />
-      <Projects />
       <Recommendations />
       <Blog />
       <Contact />

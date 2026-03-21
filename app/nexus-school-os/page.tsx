@@ -2,87 +2,153 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { portfolioData } from "@/lib/data";
+import ScrollReveal from "@/components/ScrollReveal";
 
+// ── Icons ───────────────────────────────────────────────────────────
+const WhatsAppIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
+  </svg>
+);
+
+const CheckIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="3"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
+// ── Page Component ──────────────────────────────────────────────────
 export default function NexusLandingPage() {
+  const whatsapp = portfolioData.chatData.whatsapp;
+
   return (
-    <div className="min-h-screen font-sans text-white bg-[#05081A] selection:bg-[#1A237E] selection:text-white">
-      {/* Navigation */}
-      <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-[#05081A]/80 backdrop-blur-md">
-        <div className="container mx-auto flex h-20 items-center justify-between px-6">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-[#1A237E] flex items-center justify-center font-bold text-xl">
+    <div
+      className="min-h-screen text-white bg-[#05081A] selection:bg-[#1A237E] selection:text-white overflow-x-hidden"
+      style={{ fontFamily: "'Inter', ui-sans-serif, system-ui, sans-serif" }}
+    >
+      {/* ── Force Inter from Google Fonts ── */}
+      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+      `}</style>
+
+      {/* ── Scroll Reveal: useEffect-based IntersectionObserver ── */}
+      <ScrollReveal />
+
+      {/* ── Navigation ─────────────────────────────────────── */}
+      <nav className="fixed top-0 z-50 w-full border-b border-white/[0.06] bg-[#05081A]/85 backdrop-blur-xl">
+        <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#1A237E] text-sm font-black tracking-tighter">
               N
             </div>
-            <span className="text-xl font-bold tracking-tight">NEXUS</span>
+            <span className="text-[13px] font-bold tracking-[-0.01em] sm:text-[15px] sm:tracking-[-0.02em]">
+              NEXUS SCHOOL OS
+            </span>
           </div>
+          {/* Hidden on xs to avoid overlap with global theme toggle */}
           <Link
-            href="#contact"
-            className="rounded-full bg-[#1A237E] px-6 py-2.5 text-sm font-semibold transition-all hover:bg-[#1A237E]/80 hover:shadow-[0_0_20px_rgba(26,35,126,0.3)]"
+            href={whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:flex items-center gap-2 rounded-full bg-white/[0.08] border border-white/[0.12] px-5 py-2 text-[13px] font-semibold text-white/90 transition-all hover:bg-white/[0.13] hover:border-white/20"
           >
-            Request Private Demo
+            Request Demo
           </Link>
         </div>
       </nav>
 
       <main>
-        {/* Section 1: Hero */}
-        <section className="relative flex min-h-screen items-center pt-20 overflow-hidden">
-          {/* Background Glows */}
-          <div className="absolute top-1/4 -left-20 h-[500px] w-[500px] rounded-full bg-[#1A237E] opacity-10 blur-[120px]" />
-          <div className="absolute bottom-1/4 -right-20 h-[400px] w-[400px] rounded-full bg-[#00E676] opacity-5 blur-[120px]" />
+        {/* ── Section 1: Hero ────────────────────────────────── */}
+        <section className="relative flex min-h-screen items-center pt-[72px] overflow-hidden">
+          {/* Ambient glows */}
+          <div className="absolute -top-32 -left-32 h-[600px] w-[600px] rounded-full bg-[#1A237E] opacity-[0.07] blur-[140px] pointer-events-none" />
+          <div className="absolute bottom-0 -right-32 h-[500px] w-[500px] rounded-full bg-[#00E676] opacity-[0.04] blur-[140px] pointer-events-none" />
 
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
+          <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 py-24 lg:py-32">
+            <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
+              {/* Copy */}
               <div className="flex flex-col gap-8">
-                <div className="flex flex-col gap-2">
-                  <span className="text-sm font-extrabold tracking-[0.2em] text-[#8C9EFF] uppercase">
+                <div className="flex flex-col gap-3">
+                  <span
+                    data-reveal
+                    className="reveal-item inline-flex w-fit items-center rounded-full border border-[#8C9EFF]/25 bg-[#8C9EFF]/10 px-3.5 py-1.5 text-[11px] font-bold tracking-[0.18em] text-[#8C9EFF] uppercase"
+                    style={{ transitionDelay: "0ms" }}
+                  >
                     The Gold Standard in Nigerian Education
                   </span>
-                  <h1 className="text-5xl font-extrabold leading-[1.1] tracking-tight text-white md:text-7xl lg:text-8xl">
-                    Bank-Grade Security.
+                  <h1
+                    data-reveal
+                    className="reveal-item text-[52px] font-black leading-[1.05] tracking-[-0.03em] text-white sm:text-[68px] lg:text-[82px] xl:text-[96px]"
+                    style={{ transitionDelay: "80ms" }}
+                  >
+                    Bank-Grade
                     <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#8C9EFF]">
-                      Zero Internet Required.
+                    Security.{" "}
+                    <span className="bg-gradient-to-r from-white via-[#c7cfff] to-[#8C9EFF] bg-clip-text text-transparent">
+                      Zero Internet
+                      <br className="hidden sm:block" /> Required.
                     </span>
                   </h1>
                 </div>
 
-                <p className="max-w-xl text-lg leading-relaxed text-[#8C9EFF]">
+                <p className="max-w-[480px] text-[17px] leading-[1.7] text-[#8C9EFF]/90 nexus-fade-in nexus-fade-in-delay-3">
                   Nexus School OS is the offline-first nervous system for
-                  premium private schools. End "Grade Expo." Eliminate your
-                  printing budget. Process 500 report cards in exactly 4 seconds
-                  — without ever connecting to the internet.
+                  premium private schools. End &ldquo;Grade Expo.&rdquo;
+                  Eliminate your printing budget. Process 500 report cards in
+                  exactly 4 seconds — with zero internet dependency.
                 </p>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-3 nexus-fade-in nexus-fade-in-delay-4">
                   <Link
-                    href="#contact"
-                    className="inline-flex w-fit rounded-full bg-[#1A237E] px-10 py-5 text-xl font-bold transition-all hover:bg-[#1A237E]/80 hover:shadow-[0_0_30px_rgba(26,35,126,0.4)]"
+                    href={whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="nexus-breathe inline-flex w-fit items-center gap-2.5 rounded-full bg-[#25D366] px-7 py-4 text-[15px] font-bold text-white transition-all hover:scale-[1.03] active:scale-[0.97]"
                   >
-                    Request Your Private Demo
+                    <WhatsAppIcon />
+                    Chat with Founder on WhatsApp
                   </Link>
-                  <span className="text-xs font-medium text-[#8C9EFF]">
-                    Hardware limits apply. Book early to secure your integration
-                    slot.
+                  <span className="text-[12px] text-[#8C9EFF]/60 tracking-wide">
+                    Hardware limits apply — only 10 integration slots remaining.
                   </span>
                 </div>
               </div>
 
-              <div className="relative flex justify-center py-12">
-                <div className="absolute inset-0 bg-gradient-radial from-[#1A237E]/20 to-transparent blur-3xl" />
-                <div
-                  className="relative z-10 w-full max-w-[450px]"
-                  style={{
-                    transform: "scale(0.9)",
-                    transformOrigin: "top center",
-                  }}
-                >
-                  <div className="rounded-[60px] border-[12px] border-white/5 bg-[#05081A] shadow-2xl">
+              {/* Phone Simulator */}
+              <div
+                data-reveal
+                className="reveal-item relative flex justify-center lg:justify-end"
+                style={{ transitionDelay: "120ms" }}
+              >
+                <div className="absolute inset-0 rounded-full bg-[#1A237E] opacity-20 blur-[100px]" />
+                <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] lg:max-w-[430px]">
+                  <div className="rounded-[52px] border-[10px] border-white/[0.07] bg-[#05081A] shadow-[0_40px_100px_rgba(0,0,0,0.7)]">
                     <iframe
                       src="/assets/nexus-app-simulator.html"
                       width="100%"
-                      height="850"
-                      className="rounded-[48px] border-none bg-transparent"
+                      height="800"
+                      className="rounded-[44px] border-none bg-transparent"
                       scrolling="no"
                     />
                   </div>
@@ -92,191 +158,217 @@ export default function NexusLandingPage() {
           </div>
         </section>
 
-        {/* Global Trust Banner */}
-        <section className="border-y border-white/5 bg-white/[0.02] py-8 backdrop-blur-sm relative z-10">
-          <div className="container mx-auto px-6 flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-12 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-            <span className="text-sm font-semibold tracking-widest text-[#8C9EFF] uppercase mb-2 sm:mb-0 sm:mr-4 text-center">
+        {/* ── Trust Banner ───────────────────────────────────── */}
+        <section className="border-y border-white/[0.06] bg-white/[0.02] py-7 backdrop-blur-sm">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-10">
+            <span className="text-[11px] font-bold tracking-[0.2em] text-[#8C9EFF]/60 uppercase shrink-0">
               Built exclusively for
             </span>
-            <div className="flex flex-wrap justify-center gap-6 md:gap-12">
-              <div className="flex items-center gap-2 font-bold text-md lg:text-lg">
-                <span className="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>{" "}
-                Elite Proprietary Schools
-              </div>
-              <div className="flex items-center gap-2 font-bold text-md lg:text-lg">
-                <span className="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>{" "}
-                Premier Charter Networks
-              </div>
-              <div className="flex items-center gap-2 font-bold text-md lg:text-lg">
-                <span className="w-3 h-3 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></span>{" "}
-                Forward-Thinking Principals
-              </div>
+            <div className="flex flex-wrap justify-center gap-5 sm:gap-10">
+              {[
+                { color: "bg-blue-500/70", label: "Elite Proprietary Schools" },
+                { color: "bg-[#00E676]/70", label: "Premier Charter Networks" },
+                { color: "bg-purple-500/70", label: "Tech-Forward Principals" },
+              ].map(({ color, label }) => (
+                <div
+                  key={label}
+                  className="flex items-center gap-2 text-[13px] font-semibold text-white/70"
+                >
+                  <span className={`h-2 w-2 rounded-full ${color}`} />
+                  {label}
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Section 2: Core Pains */}
-        <section className="py-32 relative">
-          <div className="container mx-auto px-6">
-            <div className="mb-24 flex flex-col items-center text-center">
-              <h2 className="max-w-3xl text-4xl font-extrabold leading-tight md:text-5xl">
+        {/* ── Section 2: Core Pains ──────────────────────────── */}
+        <section className="py-24 sm:py-32 lg:py-40 relative">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <div data-reveal className="reveal-item mb-16 sm:mb-20 text-center">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#00E676] uppercase">
+                The Problem
+              </span>
+              <h2 className="mt-3 text-[36px] font-black leading-[1.1] tracking-[-0.03em] sm:text-[48px] lg:text-[56px]">
                 Nigerian Schools Run on Trust.
                 <br />
                 <span className="text-[#8C9EFF]">
-                  Don't Lose It To An Excel Sheet.
+                  Don&rsquo;t Lose It To an Excel Sheet.
                 </span>
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-              {/* Card 1 */}
-              <div className="group relative rounded-[32px] border border-white/5 bg-white/[0.03] p-8 lg:p-10 transition-all hover:bg-white/[0.05] hover:border-white/10 backdrop-blur-xl">
-                <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1A237E]/20 text-3xl transition-transform group-hover:scale-110">
-                  🛑
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+              {[
+                {
+                  emoji: "🛑",
+                  bg: "bg-[#1A237E]/15",
+                  title: "The End of Grade Manipulation",
+                  body: "Every grade entered is timestamped, locked to a specific teacher's biometric fingerprint, and secured in an encrypted local vault. The truth is never negotiable.",
+                  delay: "0ms",
+                },
+                {
+                  emoji: "💸",
+                  bg: "bg-[#00E676]/10",
+                  title: "Sanctity From Data Costs",
+                  body: "Why pay exorbitant monthly cloud fees? Nexus uses localised pairing tech. Teachers sync results directly to the Principal's laptop over free local Wi-Fi.",
+                  delay: "100ms",
+                },
+                {
+                  emoji: "🖨️",
+                  bg: "bg-[#1A237E]/15",
+                  title: "Zero Manual Computation",
+                  body: "Teachers enter raw scores. Nexus calculates positions, handles ties instantly, and generates print-ready PDF report cards for the entire school in 4 seconds.",
+                  delay: "200ms",
+                },
+              ].map(({ emoji, bg, title, body, delay }) => (
+                <div
+                  data-reveal
+                  key={title}
+                  className="reveal-item group rounded-[28px] border border-white/[0.07] bg-white/3 p-10 backdrop-blur-xl transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.05]"
+                  style={{ transitionDelay: delay }}
+                >
+                  <div
+                    className={`mb-7 inline-flex h-14 w-14 items-center justify-center rounded-2xl ${bg} text-2xl transition-transform duration-300 group-hover:scale-110`}
+                  >
+                    {emoji}
+                  </div>
+                  <h3 className="mb-3 text-[20px] font-bold tracking-[-0.02em] leading-snug">
+                    {title}
+                  </h3>
+                  <p className="text-[15px] leading-[1.7] text-[#8C9EFF]/85">
+                    {body}
+                  </p>
                 </div>
-                <h3 className="mb-4 text-2xl font-bold">
-                  The End of Grade Manipulation
-                </h3>
-                <p className="text-[#8C9EFF] leading-relaxed">
-                  Every grade entered is timestamped, locked to a specific
-                  teacher's biometric fingerprint, and secured in an encrypted
-                  local vault. The truth is never negotiable.
-                </p>
-              </div>
-
-              {/* Card 2 */}
-              <div className="group relative rounded-[32px] border border-white/5 bg-white/[0.03] p-8 lg:p-10 transition-all hover:bg-white/[0.05] hover:border-white/10 backdrop-blur-xl">
-                <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#00E676]/20 text-3xl transition-transform group-hover:scale-110">
-                  💸
-                </div>
-                <h3 className="mb-4 text-2xl font-bold">
-                  Sanctity From Data Costs
-                </h3>
-                <p className="text-[#8C9EFF] leading-relaxed">
-                  Why pay exorbitant monthly cloud fees? Nexus uses localized
-                  "Marriage" tech. Teachers sync results directly to the
-                  Principal's laptop using free local Wi-Fi.
-                </p>
-              </div>
-
-              {/* Card 3 */}
-              <div className="group relative rounded-[32px] border border-white/5 bg-white/[0.03] p-8 lg:p-10 transition-all hover:bg-white/[0.05] hover:border-white/10 backdrop-blur-xl">
-                <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1A237E]/20 text-3xl">
-                  🖨️
-                </div>
-                <h3 className="mb-4 text-2xl font-bold">
-                  Zero Manual Computation
-                </h3>
-                <p className="text-[#8C9EFF] leading-relaxed">
-                  Your teachers enter raw scores. Nexus calculates positions,
-                  handles ties instantly, and generates print-ready PDF report
-                  cards for the entire school in 4 seconds.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Section 3: How It Works */}
-        <section className="py-32 bg-white/[0.01]">
-          <div className="container mx-auto px-6">
-            <div className="flex flex-col gap-40">
+        {/* ── Section 3: How It Works ────────────────────────── */}
+        <section className="py-24 sm:py-32 lg:py-40 bg-gradient-to-b from-white/[0.01] to-transparent">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <div data-reveal className="reveal-item mb-16 sm:mb-24">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#00E676] uppercase">
+                How It Works
+              </span>
+              <h2 className="mt-3 text-[36px] font-black leading-[1.1] tracking-[-0.03em] sm:text-[48px] lg:text-[56px]">
+                Three Steps.
+                <br />
+                <span className="text-[#8C9EFF]">Total School Domination.</span>
+              </h2>
+            </div>
+
+            <div className="flex flex-col gap-24 sm:gap-32 lg:gap-40">
               {/* Step 1 */}
-              <div className="grid grid-cols-1 items-center gap-20 lg:grid-cols-2">
-                <div className="flex flex-col gap-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#1A237E] font-bold text-[#8C9EFF]">
+              <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
+                <div className="flex flex-col gap-5">
+                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#1A237E] text-[13px] font-black text-[#8C9EFF] tracking-tight">
                     01
                   </div>
-                  <h3 className="text-4xl font-extrabold">
+                  <h3 className="text-[30px] font-black leading-[1.1] tracking-[-0.03em] sm:text-[36px]">
                     Pair Teachers Instantly.
                   </h3>
-                  <p className="text-lg text-[#8C9EFF] leading-relaxed">
+                  <p className="text-[16px] leading-[1.7] text-[#8C9EFF]/85">
                     Admin uploads the student roster. Teachers point their phone
                     at the Admin laptop. The system pairs their hardware,
                     downloads their specific class, and locks the data behind
                     their personal fingerprint.
                   </p>
                 </div>
-                <div className="aspect-video rounded-[32px] border border-white/5 bg-white/[0.03] flex items-center justify-center overflow-hidden">
-                  <div className="text-center p-12">
-                    <div className="bg-white p-4 rounded-2xl inline-block mb-6">
-                      {/* Deal image */}
-                      <Image
-                        src="/images/deal.jpg"
-                        alt="Nexus Pairing"
-                        width={250}
-                        height={250}
-                      />
-                    </div>
-                    <p className="text-sm font-mono text-[#8C9EFF]">
-                      NEXUS PAIRING PROTOCOL: ACTIVE
-                    </p>
+                <div className="aspect-video overflow-hidden rounded-[28px] border border-white/[0.07] bg-white/3 relative">
+                  <Image
+                    src="/images/deal.jpg"
+                    alt="Admin and teacher pairing their devices for Nexus setup"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#05081A]/75 via-transparent to-[#05081A]/15" />
+                  <div className="absolute bottom-5 left-0 right-0 flex justify-center">
+                    <span className="rounded-full border border-white/[0.15] bg-[#05081A]/75 px-4 py-1.5 text-[11px] font-mono font-semibold tracking-widest text-[#8C9EFF] backdrop-blur-sm uppercase">
+                      Nexus Pairing Protocol: Active
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Step 2 */}
-              <div className="grid grid-cols-1 items-center gap-20 lg:grid-cols-2">
-                <div className="order-2 lg:order-1 aspect-video rounded-[32px] border border-white/5 bg-white/[0.03] flex items-center justify-center overflow-hidden">
-                  <div className="w-full max-w-md p-8 bg-[#05081A] rounded-2xl border border-white/10">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="h-2 w-32 bg-white/10 rounded-full" />
-                      <div className="h-6 w-12 bg-[#00E676]/20 rounded-full" />
+              <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
+                <div className="order-2 lg:order-1 aspect-video overflow-hidden rounded-[28px] border border-white/[0.07] bg-white/3 flex items-center justify-center p-8">
+                  <div className="w-full max-w-sm space-y-3">
+                    <div className="flex items-center justify-between rounded-xl bg-white/[0.05] px-4 py-2.5">
+                      <span className="text-[12px] font-medium text-[#8C9EFF]/70">
+                        Grading Mode
+                      </span>
+                      <span className="rounded-full bg-[#00E676]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#00E676]">
+                        OFFLINE
+                      </span>
                     </div>
-                    <div className="space-y-4">
-                      {[85, 92, 78, 95].map((score, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center justify-between p-3 bg-white/5 rounded-lg"
-                        >
-                          <div className="h-2 w-24 bg-white/20 rounded-full" />
-                          <div className="font-mono text-[#00E676]">
-                            {score}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                    {[
+                      { name: "Mathematics CI", score: 85 },
+                      { name: "English Language", score: 92 },
+                      { name: "Biology Mid-Term", score: 78 },
+                      { name: "Physics Practical", score: 95 },
+                    ].map(({ name, score }) => (
+                      <div
+                        key={name}
+                        className="flex items-center justify-between rounded-xl bg-white/[0.04] px-4 py-3 border border-white/[0.05]"
+                      >
+                        <span className="text-[13px] text-white/70">
+                          {name}
+                        </span>
+                        <span className="font-mono text-[14px] font-bold text-[#00E676]">
+                          {score}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div className="order-1 lg:order-2 flex flex-col gap-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#1A237E] font-bold text-[#8C9EFF]">
+                <div className="order-1 lg:order-2 flex flex-col gap-5">
+                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#1A237E] text-[13px] font-black text-[#8C9EFF] tracking-tight">
                     02
                   </div>
-                  <h3 className="text-4xl font-extrabold">
+                  <h3 className="text-[30px] font-black leading-[1.1] tracking-[-0.03em] sm:text-[36px]">
                     Grade From Anywhere.
                   </h3>
-                  <p className="text-lg text-[#8C9EFF] leading-relaxed">
-                    Our proprietary "Focus Mode" lets teachers grade offline on
-                    their bus ride, during prep, or at home. No bundles, no
-                    network failures, no excuses.
+                  <p className="text-[16px] leading-[1.7] text-[#8C9EFF]/85">
+                    Our proprietary &ldquo;Focus Mode&rdquo; lets teachers grade
+                    entirely offline — on their bus ride, during prep, or at
+                    home. No data bundles, no network failures, no excuses.
                   </p>
                 </div>
               </div>
 
               {/* Step 3 */}
-              <div className="grid grid-cols-1 items-center gap-20 lg:grid-cols-2">
-                <div className="flex flex-col gap-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#1A237E] font-bold text-[#8C9EFF]">
+              <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
+                <div className="flex flex-col gap-5">
+                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#1A237E] text-[13px] font-black text-[#8C9EFF] tracking-tight">
                     03
                   </div>
-                  <h3 className="text-4xl font-extrabold">
+                  <h3 className="text-[30px] font-black leading-[1.1] tracking-[-0.03em] sm:text-[36px]">
                     Perfection in 4 Seconds.
                   </h3>
-                  <p className="text-lg text-[#8C9EFF] leading-relaxed">
-                    Upload termly logos and the Principal's digital signature
-                    once. Click 'Generate' and watch a folder of beautiful,
-                    branded, pristine report cards appear on your desktop.
+                  <p className="text-[16px] leading-[1.7] text-[#8C9EFF]/85">
+                    Upload your termly logos and the Principal&rsquo;s digital
+                    signature once. Click &lsquo;Generate&rsquo; and watch a
+                    folder of beautiful, branded, pristine report cards
+                    materialise on your desktop.
                   </p>
                 </div>
-                <div className="aspect-video rounded-[32px] border border-white/5 bg-white/[0.03] flex items-center justify-center overflow-hidden">
-                  <div className="bg-white p-4 rounded-2xl inline-block my-6">
-                    {/* Done image */}
-                    <Image
-                      src="/images/done.jpg"
-                      alt="Nexus Pairing"
-                      width={450}
-                      height={450}
-                    />
+                <div className="aspect-video overflow-hidden rounded-[28px] border border-white/[0.07] bg-white/3 relative">
+                  <Image
+                    src="/images/done.jpg"
+                    alt="A school using Nexus to generate perfect report cards in seconds"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#05081A]/75 via-transparent to-[#05081A]/25" />
+                  <div className="absolute bottom-5 left-0 right-0 flex justify-center">
+                    <span className="rounded-full border border-[#00E676]/30 bg-[#05081A]/75 px-4 py-1.5 text-[11px] font-mono font-bold tracking-widest text-[#00E676] backdrop-blur-sm uppercase">
+                      521 PDF Reports Generated ✓
+                    </span>
                   </div>
                 </div>
               </div>
@@ -284,119 +376,380 @@ export default function NexusLandingPage() {
           </div>
         </section>
 
-        {/* Section 4: Tech Flex */}
-        <section className="py-32 bg-black">
-          <div className="container mx-auto px-6">
-            <div className="mb-20">
-              <span className="text-sm font-bold tracking-widest text-[#00E676] uppercase">
+        {/* ── Section 4: Tech Flex ───────────────────────────── */}
+        <section className="py-24 sm:py-32 lg:py-40 bg-black">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <div className="mb-16 sm:mb-20">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#00E676] uppercase">
                 Engineering Excellence
               </span>
-              <h2 className="mt-4 text-4xl font-extrabold md:text-5xl">
+              <h2 className="mt-3 text-[36px] font-black leading-[1.1] tracking-[-0.03em] sm:text-[48px] lg:text-[52px]">
                 Military-Grade Infrastructure,
-                <br /> Built for the Principal's Desk.
+                <br />
+                Built for the Principal&rsquo;s Desk.
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-              <div className="flex flex-col gap-4">
-                <div className="text-2xl">🛡️</div>
-                <h4 className="text-xl font-bold">
-                  Never Lose a Device to Heat
-                </h4>
-                <p className="text-[#8C9EFF]">
-                  Our "Eco-Guardian Protocol" monitors device temperature in
-                  real-time. It breathes green when safe, and pauses sync if a
-                  teacher's phone overheats, protecting their personal hardware
-                  investment.
-                </p>
+            <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
+              {[
+                {
+                  icon: "🛡️",
+                  title: "Never Lose a Device to Heat",
+                  body: 'The "Eco-Guardian Protocol" monitors device temperature in real-time. It breathes green when safe and pauses sync if a teacher\'s phone overheats — protecting their personal hardware investment.',
+                },
+                {
+                  icon: "🔐",
+                  title: "Absolute Data Sovereignty",
+                  body: "Protected by standard encryption and SQLCipher. Data at rest is encrypted so deeply that even if a device is stolen, the internal student data is utterly inaccessible.",
+                },
+                {
+                  icon: "📡",
+                  title: "Instant Sync, Zero Waiting",
+                  body: 'No more "loading..." spinners during staff meetings. 1,000 grades sync across a room in under 350 milliseconds over a private local area network. Total efficiency.',
+                },
+              ].map(({ icon, title, body }) => (
+                <div key={title} className="flex flex-col gap-4">
+                  <span className="text-[28px]">{icon}</span>
+                  <h4 className="text-[18px] font-bold tracking-[-0.02em]">
+                    {title}
+                  </h4>
+                  <p className="text-[15px] leading-[1.7] text-[#8C9EFF]/80">
+                    {body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Section 5: Pricing Plans ───────────────────────── */}
+        <section className="py-24 sm:py-32 lg:py-40 relative overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[900px] rounded-full bg-[#1A237E] opacity-[0.08] blur-[160px] pointer-events-none" />
+
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 relative z-10">
+            <div className="mb-16 sm:mb-20 text-center">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#00E676] uppercase">
+                Transparent Pricing
+              </span>
+              <h2 className="mt-3 text-[36px] font-black leading-[1.1] tracking-[-0.03em] sm:text-[48px] lg:text-[52px]">
+                A Partnership That Grows With You.
+              </h2>
+              <p className="mt-4 text-[17px] leading-[1.7] text-[#8C9EFF]/80 max-w-md mx-auto">
+                Pay per student, per term — just like a school should.
+              </p>
+            </div>
+
+            {/* Grid — uses padding to give Gold space to breathe */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:items-center md:px-8 lg:px-0">
+              {/* Silver */}
+              <div className="flex flex-col gap-7 rounded-[28px] border border-white/[0.09] bg-white/3 p-10 backdrop-blur-xl h-full">
+                <div>
+                  <p className="text-[11px] font-bold tracking-[0.18em] text-[#8C9EFF] uppercase mb-2">
+                    Silver
+                  </p>
+                  <h3 className="text-[22px] font-bold tracking-[-0.02em] leading-snug">
+                    For smaller schools finding their footing.
+                  </h3>
+                </div>
+                <div>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-[42px] font-black tracking-[-0.04em]">
+                      ₦250
+                    </span>
+                    <span className="text-[13px] text-[#8C9EFF]/70">
+                      /student/term
+                    </span>
+                  </div>
+                  <p className="mt-1 text-[12px] text-[#8C9EFF]/55 italic">
+                    e.g. 150 students = ₦37,500/term
+                  </p>
+                </div>
+                <ul className="flex flex-col gap-2.5 text-[14px] text-[#8C9EFF]/80">
+                  {[
+                    "Full offline grading suite",
+                    "PDF report card generation",
+                    "Biometric teacher security",
+                  ].map((f) => (
+                    <li key={f} className="flex items-center gap-2.5">
+                      <span className="text-[#00E676]">
+                        <CheckIcon />
+                      </span>
+                      {f}
+                    </li>
+                  ))}
+                  <li className="flex items-center gap-2.5 text-white font-semibold mt-1">
+                    <span>🏫</span>Schools under 200 students
+                  </li>
+                </ul>
+                <div className="mt-auto pt-6 border-t border-white/[0.07]">
+                  <p className="text-[12px] text-[#8C9EFF]/55 mb-4">
+                    One-time Setup:{" "}
+                    <span className="text-white/80 font-semibold">₦50,000</span>
+                  </p>
+                  <Link
+                    href={whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full rounded-full border border-white/[0.15] py-3 text-center text-[14px] font-semibold text-white/80 transition-all hover:border-[#8C9EFF]/50 hover:text-[#8C9EFF]"
+                  >
+                    Book a Demo
+                  </Link>
+                </div>
               </div>
-              <div className="flex flex-col gap-4">
-                <div className="text-2xl">🔐</div>
-                <h4 className="text-xl font-bold">Absolute Data Sovereignty</h4>
-                <p className="text-[#8C9EFF]">
-                  Protected by standard encryption and SQLCipher. Data at rest
-                  is encrypted so deeply that even if a phone is stolen, the
-                  internal student data remains utterly inaccessible.
-                </p>
+
+              {/* Gold — Most Popular */}
+              <div className="nexus-gold-pulse relative flex flex-col gap-7 rounded-[32px] border border-[#1A237E] bg-[#0d1240] p-10 backdrop-blur-xl md:scale-[1.05] h-full">
+                <div className="absolute -top-[18px] left-1/2 -translate-x-1/2 whitespace-nowrap">
+                  <span className="rounded-full border border-[#8C9EFF]/30 bg-[#1A237E] px-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase text-white shadow-lg">
+                    ⭐ Most Popular
+                  </span>
+                </div>
+                <div>
+                  <p className="text-[11px] font-bold tracking-[0.18em] text-[#8C9EFF] uppercase mb-2">
+                    Gold
+                  </p>
+                  <h3 className="text-[22px] font-bold tracking-[-0.02em] leading-snug">
+                    For established schools ready to scale.
+                  </h3>
+                </div>
+                <div>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-[42px] font-black tracking-[-0.04em]">
+                      ₦500
+                    </span>
+                    <span className="text-[13px] text-[#8C9EFF]/70">
+                      /student/term
+                    </span>
+                  </div>
+                  <p className="mt-1 text-[12px] text-[#8C9EFF]/55 italic">
+                    e.g. 400 students = ₦200,000/term
+                  </p>
+                </div>
+                <ul className="flex flex-col gap-2.5 text-[14px] text-[#8C9EFF]/80">
+                  {[
+                    "Everything in Silver",
+                    "Priority on-site technical support",
+                    "Eco-Guardian thermal monitoring",
+                  ].map((f) => (
+                    <li key={f} className="flex items-center gap-2.5">
+                      <span className="text-[#00E676]">
+                        <CheckIcon />
+                      </span>
+                      {f}
+                    </li>
+                  ))}
+                  <li className="flex items-center gap-2.5 text-white font-semibold mt-1">
+                    <span>🏫</span>200–500 students
+                  </li>
+                </ul>
+                <div className="mt-auto pt-6 border-t border-white/[0.1]">
+                  <p className="text-[12px] text-[#8C9EFF]/55 mb-4">
+                    One-time Setup:{" "}
+                    <span className="text-white/80 font-semibold">
+                      ₦100,000
+                    </span>
+                  </p>
+                  <Link
+                    href={whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full rounded-full bg-[#1A237E] py-3 text-center text-[14px] font-bold text-white transition-all hover:bg-[#232db0] hover:shadow-[0_0_30px_rgba(26,35,126,0.5)]"
+                  >
+                    Book a Demo
+                  </Link>
+                </div>
               </div>
-              <div className="flex flex-col gap-4">
-                <div className="text-2xl">📡</div>
-                <h4 className="text-xl font-bold">
-                  Instant Sync, Zero Waiting
-                </h4>
-                <p className="text-[#8C9EFF]">
-                  No more "loading..." spinners during staff meetings. 1,000
-                  grades sync across a room in less than 350 milliseconds over a
-                  private local area network. Total efficiency.
-                </p>
+
+              {/* Diamond */}
+              <div className="flex flex-col gap-7 rounded-[28px] border border-white/[0.09] bg-white/3 p-10 backdrop-blur-xl h-full">
+                <div>
+                  <p className="text-[11px] font-bold tracking-[0.18em] text-[#8C9EFF] uppercase mb-2">
+                    Diamond
+                  </p>
+                  <h3 className="text-[22px] font-bold tracking-[-0.02em] leading-snug">
+                    For multi-campus schools and school groups.
+                  </h3>
+                </div>
+                <div>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-[42px] font-black tracking-[-0.04em]">
+                      Custom
+                    </span>
+                  </div>
+                  <p className="mt-1 text-[12px] text-[#8C9EFF]/55 italic">
+                    Pricing per quote — built around your school group.
+                  </p>
+                </div>
+                <ul className="flex flex-col gap-2.5 text-[14px] text-[#8C9EFF]/80">
+                  {[
+                    "Everything in Gold",
+                    "Multi-campus sync",
+                    "Dedicated account manager",
+                    "Custom API integrations",
+                  ].map((f) => (
+                    <li key={f} className="flex items-center gap-2.5">
+                      <span className="text-[#00E676]">
+                        <CheckIcon />
+                      </span>
+                      {f}
+                    </li>
+                  ))}
+                  <li className="flex items-center gap-2.5 text-white font-semibold mt-1">
+                    <span>🏫</span>500+ students / multiple branches
+                  </li>
+                </ul>
+                <div className="mt-auto pt-6 border-t border-white/[0.07]">
+                  <p className="text-[12px] text-[#8C9EFF]/55 mb-4">
+                    One-time Setup:{" "}
+                    <span className="text-white/80 font-semibold">
+                      From ₦250,000
+                    </span>
+                  </p>
+                  <Link
+                    href={whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full rounded-full border border-white/[0.15] py-3 text-center text-[14px] font-semibold text-white/80 transition-all hover:border-[#8C9EFF]/50 hover:text-[#8C9EFF]"
+                  >
+                    Request a Quote
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <p className="mt-14 text-center text-[13px] leading-[1.7] text-[#8C9EFF]/55 max-w-xl mx-auto">
+              All plans are payable termly, at the start of school fees
+              collection. Prices are per student enrolled — as your school
+              grows, you stay on the same per-student rate.
+            </p>
+            <div className="mt-8 flex justify-center">
+              <div className="inline-flex items-center gap-3 rounded-full border border-[#00E676]/25 bg-[#00E676]/[0.07] px-6 py-3 text-[13px] text-[#00E676] font-semibold backdrop-blur-md">
+                <span className="text-[18px]">👑</span>
+                <span>
+                  <strong>Founder Cohort — First 10 schools only:</strong> 50%
+                  Setup fee discount. Lock in your rate before public launch.
+                </span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Section 5: CTA */}
-        <section id="contact" className="py-40 relative overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-[#1A237E] opacity-20 blur-[150px]" />
+        {/* ── Section 6: Final CTA ───────────────────────────── */}
+        <section
+          id="contact"
+          className="py-24 sm:py-32 lg:py-48 relative overflow-hidden"
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[700px] w-[700px] rounded-full bg-[#1A237E] opacity-[0.18] blur-[160px] pointer-events-none" />
+          <div className="absolute bottom-0 left-1/4 h-[300px] w-[300px] rounded-full bg-[#00E676] opacity-[0.04] blur-[100px] pointer-events-none" />
 
-          <div className="container mx-auto px-6 relative z-10 text-center">
-            <h2 className="mb-8 text-5xl font-extrabold md:text-7xl">
-              Stop Renting Out Your School's
-              <br /> Most Valuable Asset.
+          <div className="mx-auto max-w-5xl px-5 sm:px-8 relative z-10 text-center">
+            <span className="text-[11px] font-bold tracking-[0.2em] text-[#8C9EFF]/70 uppercase">
+              The Final Call
+            </span>
+            <h2 className="mt-4 text-[40px] font-black leading-[1.05] tracking-[-0.03em] sm:text-[56px] lg:text-[72px] xl:text-[80px]">
+              Stop Renting Out Your
+              <br />
+              School&rsquo;s Most Valuable Asset.
             </h2>
-            <p className="mb-12 text-2xl text-[#8C9EFF]">
-              Take ownership of your data today.
+            <p className="mt-6 text-[18px] leading-[1.7] text-[#8C9EFF]/80 max-w-md mx-auto">
+              Take complete ownership of your school&rsquo;s data. Today.
             </p>
-
-            <div className="flex flex-col items-center gap-6">
+            <div className="mt-10 flex flex-col items-center gap-4">
               <Link
-                href={portfolioData.chatData.whatsapp}
+                href={whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex items-center justify-center gap-3 rounded-full bg-[#25D366] px-8 py-5 text-lg lg:px-12 lg:py-6 lg:text-2xl font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(37,211,102,0.3)] hover:shadow-[0_0_60px_rgba(37,211,102,0.5)] border border-white/20"
+                className="nexus-breathe inline-flex items-center gap-3 rounded-full bg-[#25D366] px-8 py-5 text-[17px] font-bold text-white transition-all hover:scale-[1.04] active:scale-[0.97] sm:px-12 sm:text-[20px]"
               >
-                <div className="absolute inset-0 rounded-full bg-white opacity-0 blur-xl transition-opacity group-hover:opacity-20" />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="relative z-10"
-                >
-                  <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
-                </svg>
-                <span className="relative z-10 leading-none tracking-tight">
-                  Chat with Founder on WhatsApp
-                </span>
+                <WhatsAppIcon />
+                Chat with Founder on WhatsApp
               </Link>
-              <p className="max-w-md text-sm text-[#8C9EFF]/80 leading-relaxed italic">
-                "Nexus is currently accepting only 10 charter schools for the
-                upcoming academic term to ensure white-glove onboarding. Secure
-                your position."
+              <p className="max-w-sm text-[13px] leading-[1.7] text-[#8C9EFF]/50 italic">
+                &ldquo;Nexus is currently accepting only 10 charter schools for
+                the upcoming academic term — white-glove onboarding guaranteed.
+                Secure your position now.&rdquo;
               </p>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-white/5 py-12">
-        <div className="container mx-auto px-6 flex flex-col items-center justify-between gap-6 md:flex-row">
-          <div className="flex items-center gap-2 grayscale opacity-80">
-            <div className="h-6 w-6 rounded-md bg-white flex items-center justify-center font-bold text-black text-sm">
-              N
+      {/* ── Footer ────────────────────────────────────────────── */}
+      <footer className="border-t border-white/[0.06] bg-[#020510]">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-14">
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
+            {/* Brand */}
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#1A237E] text-xs font-black">
+                  N
+                </div>
+                <span className="text-[14px] font-bold tracking-[-0.02em]">
+                  NEXUS SCHOOL OS
+                </span>
+              </div>
+              <p className="text-[13px] leading-[1.6] text-[#8C9EFF]/60 max-w-[220px]">
+                The offline-first nervous system for premium private schools in
+                Nigeria.
+              </p>
             </div>
-            <span className="text-sm font-bold tracking-tight">
-              NEXUS SCHOOL OS
-            </span>
+
+            {/* Links */}
+            <div className="flex flex-col gap-3">
+              <p className="text-[11px] font-bold tracking-[0.15em] text-[#8C9EFF]/40 uppercase mb-1">
+                Quick Links
+              </p>
+              {[
+                { label: "Chat on WhatsApp", href: whatsapp, external: true },
+                { label: "Privacy Policy", href: "#" },
+                { label: "Terms of Service", href: "#" },
+              ].map(({ label, href, external }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noopener noreferrer" : undefined}
+                  className="text-[13px] text-[#8C9EFF]/55 transition-colors hover:text-[#8C9EFF]"
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Founder */}
+            <div className="flex flex-col gap-3">
+              <p className="text-[11px] font-bold tracking-[0.15em] text-[#8C9EFF]/40 uppercase mb-1">
+                Built By
+              </p>
+              <Link
+                className="text-[14px] font-semibold text-white/80"
+                href="/"
+              >
+                {portfolioData.personalInfo.name}
+              </Link>
+              <p className="text-[13px] text-[#8C9EFF]/55">
+                {portfolioData.personalInfo.role}
+              </p>
+              <Link
+                href={whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-1 inline-flex w-fit items-center gap-2 rounded-full border border-[#25D366]/30 bg-[#25D366]/[0.08] px-4 py-1.5 text-[12px] font-semibold text-[#25D366] transition-all hover:bg-[#25D366]/15"
+              >
+                <WhatsAppIcon />
+                Message Founder
+              </Link>
+            </div>
           </div>
-          <p className="text-xs text-[#8C9EFF]/70">
-            © 2026 Nexus Infrastructure. Built for the elite Nigerian education
-            sector.
-          </p>
+
+          <div className="mt-12 border-t border-white/[0.05] pt-6 flex flex-col items-center justify-between gap-3 sm:flex-row">
+            <p className="text-[12px] text-[#8C9EFF]/35">
+              © 2026 Nexus Infrastructure Ltd. All rights reserved.
+            </p>
+            <p className="text-[12px] text-[#8C9EFF]/35">
+              Built for the elite Nigerian education sector.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
