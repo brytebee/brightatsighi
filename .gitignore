@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# --- PRIVATE ASSETS ---
+# Prevent accidental commits of the private core
+lib/core/**
+
+# Prevent committing progress/strategy docs
+current_progress_summary.md
+90_day_strategy.md
+vision.md
+PRIVATE_SETUP.md

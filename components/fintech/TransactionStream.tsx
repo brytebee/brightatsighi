@@ -16,80 +16,152 @@ interface Transaction {
   timestamp: Date | string;
 }
 
-export default function TransactionStream({ transactions }: { transactions: Transaction[] }) {
+function riskColor(score: number): string {
+  if (score > 90) return "#ef4444";
+  if (score > 75) return "#f59e0b";
+  return "#008751";
+}
+
+function riskLabel(score: number): string {
+  if (score > 90) return "CRITICAL";
+  if (score > 75) return "ELEVATED";
+  return "STABLE";
+}
+
+function formatTimestamp(ts: Date | string): string {
+  try {
+    const d = new Date(ts);
+    return d.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+  } catch {
+    return "--:--:--";
+  }
+}
+
+export default function TransactionStream({
+  transactions,
+}: {
+  transactions: Transaction[];
+}) {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between px-6 py-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-xl">
-        <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-eagles-green">
-          Live Transaction Intake
-        </h3>
-        <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-electric-lime animate-pulse" />
-          <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest">
-            Stream Active
-          </span>
+    <div className="space-y-3">
+      {/* Stream header */}
+      <div className="flex items-center justify-between px-5 py-3 bg-[#0a0a0a] border border-white/[0.05] rounded-2xl">
+        <div className="flex items-center gap-3">
+          <div className="w-1.5 h-1.5 rounded-full bg-[#ccff00] animate-pulse" />
+          <h3 className="font-mono text-[10px] font-black uppercase tracking-[0.35em] text-white/60">
+            Live Transaction Intake
+          </h3>
         </div>
+        <span className="font-mono text-[9px] text-gray-600 uppercase tracking-widest">
+          {transactions.length} units
+        </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 overflow-hidden">
-        {transactions.map((trx, idx) => (
-          <div
-            key={trx.id}
-            className="group relative flex items-center justify-between p-5 bg-[#0A0A0A] border border-white/5 rounded-2xl hover:border-white/20 transition-all duration-500 hover:translate-x-1"
-            style={{ animationDelay: `${idx * 100}ms` }}
-          >
-            {/* Risk Indicator Bar */}
+      {/* Transaction rows */}
+      <div className="space-y-2">
+        {transactions.map((trx, idx) => {
+          const color = riskColor(trx.riskScore);
+          const label = riskLabel(trx.riskScore);
+          return (
             <div
-              className={`absolute left-0 top-1/4 bottom-1/4 w-[2px] rounded-full ${
-                trx.riskScore > 75 ? "bg-red-500 shadow-[0_0_10px_#ef4444]" : "bg-eagles-green"
-              }`}
-            />
+              key={trx.id}
+              className="group relative flex items-center justify-between px-5 py-4 bg-[#0a0a0a] border border-white/[0.04] rounded-2xl hover:border-white/10 transition-all duration-300 overflow-hidden"
+            >
+              {/* Left risk bar */}
+              <div
+                className="absolute left-0 top-1/4 bottom-1/4 w-[2.5px] rounded-r-full transition-all duration-300"
+                style={{
+                  background: color,
+                  boxShadow: `0 0 8px ${color}60`,
+                }}
+              />
 
-            <div className="flex items-center gap-6 pl-2">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-black text-white">{trx.merchant}</span>
-                  <span className="text-[10px] text-gray-600 font-mono tracking-tighter">
-                    {trx.id}
+              {/* Hover glow */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{
+                  background: `radial-gradient(ellipse at left, ${color}08 0%, transparent 60%)`,
+                }}
+              />
+
+              {/* Left: merchant + sender */}
+              <div className="flex items-center gap-4 pl-2 min-w-0">
+                <div className="shrink-0 w-8 h-8 rounded-xl bg-white/[0.04] border border-white/[0.05] flex items-center justify-center">
+                  <span className="font-black text-[9px] text-white/40 uppercase">
+                    {trx.merchant.slice(0, 2)}
                   </span>
                 </div>
-                <div className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">
-                  {trx.sender} • {trx.location}
+                <div className="min-w-0 space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="font-black text-[13px] text-white truncate">
+                      {trx.merchant}
+                    </span>
+                    <span className="font-mono text-[9px] text-gray-600 tracking-tighter shrink-0">
+                      {trx.id}
+                    </span>
+                  </div>
+                  <div className="font-mono text-[10px] text-gray-600 uppercase tracking-wider truncate">
+                    {trx.sender} · {trx.location} · {trx.channel}
+                  </div>
+                </div>
+              </div>
+
+              {/* Tags on hover */}
+              <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                {trx.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-2 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.06] font-mono text-[8px] uppercase tracking-widest text-gray-500"
+                  >
+                    #{tag.replace(/\s+/g, "_")}
+                  </span>
+                ))}
+              </div>
+
+              {/* Right: amount + risk */}
+              <div className="text-right space-y-0.5 shrink-0">
+                <div className="font-black text-[13px] text-white tabular-nums">
+                  {trx.amount.toLocaleString("en-NG", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  <span className="text-[10px] text-gray-600 font-mono">
+                    {trx.currency}
+                  </span>
+                </div>
+                <div className="flex items-center justify-end gap-1.5">
+                  <div
+                    className="w-1 h-1 rounded-full"
+                    style={{ background: color }}
+                  />
+                  <span
+                    className="font-mono text-[9px] font-black uppercase tracking-widest"
+                    style={{ color }}
+                  >
+                    {label} {trx.riskScore}%
+                  </span>
+                </div>
+                <div className="font-mono text-[9px] text-gray-700">
+                  {formatTimestamp(trx.timestamp)}
                 </div>
               </div>
             </div>
-
-            <div className="text-right space-y-1">
-              <div className="text-sm font-black text-white">
-                {trx.amount.toLocaleString()} <span className="text-[10px] text-gray-600">{trx.currency}</span>
-              </div>
-              <div
-                className={`text-[9px] font-black uppercase tracking-widest ${
-                  trx.riskScore > 75 ? "text-red-500" : "text-eagles-green"
-                }`}
-              >
-                Risk: {trx.riskScore}%
-              </div>
-            </div>
-
-            {/* Tags Overlay (Desktop Only) */}
-            <div className="hidden md:flex gap-2 absolute left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-              {trx.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-[8px] font-black uppercase tracking-widest text-gray-400"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
+          );
+        })}
 
         {transactions.length === 0 && (
-          <div className="py-20 text-center border border-dashed border-white/5 rounded-3xl bg-white/1">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">
-              Awaiting Intake Stream...
+          <div className="py-24 flex flex-col items-center justify-center border border-dashed border-white/[0.05] rounded-2xl bg-[#0a0a0a] font-mono">
+            <p className="text-[#008751] text-[10px] uppercase tracking-[0.3em] mb-2">
+              {">"} STREAM_BUFFER: EMPTY
+              <span className="animate-pulse">█</span>
+            </p>
+            <p className="text-gray-700 text-[9px] uppercase tracking-widest">
+              Trigger a simulation burst to populate feed
             </p>
           </div>
         )}
