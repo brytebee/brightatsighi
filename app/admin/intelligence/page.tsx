@@ -49,11 +49,20 @@ export default async function IntelligenceAdminPage() {
 
       <header className="w-full max-w-6xl px-6 pt-16 pb-12 md:px-12 relative z-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-yellow-500/20 bg-yellow-500/5 backdrop-blur-md">
-            <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse shadow-[0_0_8px_rgba(234,179,8,0.5)]" />
-            <span className="text-[10px] font-mono text-yellow-500 tracking-[0.3em] uppercase font-bold">
-              SURVEILLANCE_QUEUE // ACTIVE_DRAFTS
-            </span>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-yellow-500/20 bg-yellow-500/5 backdrop-blur-md">
+              <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse shadow-[0_0_8px_rgba(234,179,8,0.5)]" />
+              <span className="text-[10px] font-mono text-yellow-500 tracking-[0.3em] uppercase font-bold">
+                SURVEILLANCE_QUEUE // ACTIVE_DRAFTS
+              </span>
+            </div>
+            
+            <a
+              href="/admin/intelligence/new"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-[#008751]/30 bg-[#008751]/10 text-[#008751] hover:bg-[#008751]/20 hover:border-[#008751]/50 transition-all font-mono text-[10px] uppercase font-black tracking-widest shadow-[0_0_15px_rgba(0,135,81,0.15)] hover:shadow-[0_0_30px_rgba(0,135,81,0.3)] hover:-translate-y-0.5"
+            >
+              + Inject Intelligence
+            </a>
           </div>
 
           <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] italic">

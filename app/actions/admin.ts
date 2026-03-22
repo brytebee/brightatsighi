@@ -218,3 +218,55 @@ export async function createWriting(formData: FormData) {
   });
   revalidatePath("/admin/writing");
 }
+
+const IntelligenceSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(10, "Description must be at least 10 characters"),
+  category: z.string().min(1, "Category is required"),
+  link: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  sourceUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  image: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  content: z.string().optional(),
+  date: z.string().min(1, "Date is required"),
+});
+
+export async function createIntelligence(formData: FormData) {
+  await checkAuth();
+  const rawData = {
+    title: formData.get("title"),
+    description: formData.get("description"),
+    category: formData.get("category"),
+    link: formData.get("link") || "",
+    sourceUrl: formData.get("sourceUrl") || "",
+    image: formData.get("image") || "",
+    content: formData.get("content") || "",
+    date: formData.get("date"),
+    status: formData.get("status") || "PENDING",
+  };
+
+  // Validate core fields
+  const result = IntelligenceSchema.safeParse(rawData);
+
+  if (!result.success) {
+    console.error("Validation Error:", result.error.flatten());
+    throw new Error("Invalid intelligence data");
+  }
+
+  await prisma.writing.create({
+    data: {
+      title: result.data.title,
+      description: result.data.description,
+      category: result.data.category,
+      link: result.data.link || null,
+      sourceUrl: result.data.sourceUrl || null,
+      image: result.data.image || null,
+      content: result.data.content || null,
+      date: result.data.date,
+      status: rawData.status as string,
+      published: true, // Internal state mostly irrelevant for intelligence, but set true so it queries easily
+    },
+  });
+  revalidatePath("/admin/intelligence");
+  revalidatePath("/intelligence");
+}
+
