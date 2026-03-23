@@ -138,6 +138,7 @@ const WritingSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(10, "Description must be at least 10 characters"),
   link: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  image: z.string().url("Must be a valid URL").optional().or(z.literal("")),
   content: z.string().optional(),
   date: z.string().min(1, "Date is required"),
   readTime: z.string().optional(),
@@ -188,14 +189,12 @@ export async function createWriting(formData: FormData) {
     title: formData.get("title"),
     description: formData.get("description"),
     link: formData.get("link") || "",
+    image: formData.get("image") || "",
     content: formData.get("content") || "",
     date: formData.get("date"),
     readTime: formData.get("readTime") || "",
     published: formData.get("published") === "true",
   };
-
-  // Note: WritingSchema doesn't have 'published' yet, and safeParse strips unknown keys.
-  // We should update the schema or manually add it to data.
 
   // Validate core fields
   const result = WritingSchema.safeParse(rawData);
@@ -205,11 +204,21 @@ export async function createWriting(formData: FormData) {
     throw new Error("Invalid writing data");
   }
 
+  // Auto-generate AI image if none provided
+  let finalImageUrl = result.data.image || null;
+  if (!finalImageUrl) {
+    const imagePrompt = `highly detailed cinematic cover art about ${result.data.title}. stylized, masterpiece, 8k resolution, photorealistic, dramatic lighting, clean composition`;
+    const encodedPrompt = encodeURIComponent(imagePrompt);
+    const randomSeed = Math.floor(Math.random() * 100000);
+    finalImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1200&height=630&nologo=true&seed=${randomSeed}`;
+  }
+
   await prisma.writing.create({
     data: {
       title: result.data.title,
       description: result.data.description,
       link: result.data.link || null,
+      image: finalImageUrl,
       content: result.data.content || null,
       date: result.data.date,
       readTime: result.data.readTime || null,
@@ -252,6 +261,19 @@ export async function createIntelligence(formData: FormData) {
     throw new Error("Invalid intelligence data");
   }
 
+  // Auto-generate AI image if none provided
+  let finalImageUrl = result.data.image || null;
+  if (!finalImageUrl) {
+    const categoryModifier = result.data.category === "esports-intelligence" 
+      ? "esports gaming tournament" 
+      : result.data.category.replace("-", " ");
+    
+    const imagePrompt = `highly detailed cinematic futuristic intelligence report cover art about ${result.data.title}. ${categoryModifier} theme, Cyberpunk data visualization, neon green accents on dark background, masterpiece, 8k resolution, photorealistic, clean composition`;
+    const encodedPrompt = encodeURIComponent(imagePrompt);
+    const randomSeed = Math.floor(Math.random() * 100000);
+    finalImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1200&height=630&nologo=true&seed=${randomSeed}`;
+  }
+
   await prisma.writing.create({
     data: {
       title: result.data.title,
@@ -259,7 +281,7 @@ export async function createIntelligence(formData: FormData) {
       category: result.data.category,
       link: result.data.link || null,
       sourceUrl: result.data.sourceUrl || null,
-      image: result.data.image || null,
+      image: finalImageUrl,
       content: result.data.content || null,
       date: result.data.date,
       status: rawData.status as string,
