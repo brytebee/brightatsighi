@@ -42,7 +42,19 @@ export default function AdminLayout({
             href="/admin/writing"
             className="block p-2 rounded hover:bg-secondary"
           >
-            Writing
+            📝 Writing
+          </Link>
+          <Link
+            href="/lab"
+            className="block p-2 rounded hover:bg-secondary text-muted-foreground hover:text-foreground"
+          >
+            🧪 Lab
+          </Link>
+          <Link
+            href="/nexus-school-os"
+            className="block p-2 rounded hover:bg-secondary text-muted-foreground hover:text-foreground"
+          >
+            🏫 Nexus OS
           </Link>
           <div className="h-px bg-border my-2"></div>
           <Link
@@ -50,6 +62,13 @@ export default function AdminLayout({
             className="block p-2 rounded bg-eagles-green/10 text-eagles-green hover:bg-eagles-green/20 font-bold border border-eagles-green/20"
           >
             🦅 Mission Control
+          </Link>
+          <div className="h-px bg-border my-2"></div>
+          <Link
+            href="/admin/team"
+            className="block p-2 rounded hover:bg-secondary"
+          >
+            👥 Team Access
           </Link>
         </nav>
 
@@ -67,7 +86,7 @@ export default function AdminLayout({
           </form>
         </div>
       </aside>
-      <main className="flex-1 p-0 md:p-8 bg-dark-pitch">{children}</main>
+      <main className="flex-1 p-0 md:p-8 bg-background">{children}</main>
     </div>
   );
 }
