@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface ComplianceAlert {
   id: string;
@@ -14,31 +14,31 @@ interface ComplianceAlert {
 
 const severityConfig: Record<
   string,
-  { color: string; bg: string; border: string; dot: string }
+  { color: string; bg: string; border: string; glow: string }
 > = {
   CRITICAL: {
-    color: "#ef4444",
-    bg: "rgba(239,68,68,0.06)",
-    border: "rgba(239,68,68,0.25)",
-    dot: "bg-red-500",
+    color: "#ff3366", // Radiant Crimson
+    bg: "rgba(255,51,102,0.03)",
+    border: "rgba(255,51,102,0.4)",
+    glow: "rgba(255,51,102,0.2)",
   },
   HIGH: {
-    color: "#f97316",
-    bg: "rgba(249,115,22,0.05)",
-    border: "rgba(249,115,22,0.2)",
-    dot: "bg-orange-500",
+    color: "#ff8c00",
+    bg: "rgba(255,140,0,0.03)",
+    border: "rgba(255,140,0,0.3)",
+    glow: "rgba(255,140,0,0.1)",
   },
   MEDIUM: {
     color: "#f59e0b",
-    bg: "rgba(245,158,11,0.04)",
+    bg: "rgba(245,158,11,0.02)",
     border: "rgba(245,158,11,0.15)",
-    dot: "bg-yellow-500",
+    glow: "rgba(245,158,11,0.05)",
   },
   LOW: {
-    color: "#008751",
-    bg: "rgba(0,135,81,0.04)",
-    border: "rgba(0,135,81,0.15)",
-    dot: "bg-[#008751]",
+    color: "#00e676", // Cyber Emerald
+    bg: "rgba(0,230,118,0.02)",
+    border: "rgba(0,230,118,0.15)",
+    glow: "rgba(0,230,118,0.02)",
   },
 };
 
@@ -59,112 +59,121 @@ export default function ComplianceAlerts({
 }: {
   alerts: ComplianceAlert[];
 }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   return (
-    <div className="space-y-4">
-      {/* Section header */}
-      <div className="flex items-center gap-3 px-1">
-        <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-        <h3 className="font-mono text-[10px] font-black uppercase tracking-[0.35em] text-red-500/80">
-          Compliance Alerts
+    <>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes fadeInRight {
+          from { opacity: 0; transform: translateX(10px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulseBorderCritical {
+          0% { border-color: rgba(255,51,102,0.4); box-shadow: 0 0 0 transparent; }
+          50% { border-color: #ff3366; box-shadow: 0 0 15px rgba(255,51,102,0.4); }
+          100% { border-color: rgba(255,51,102,0.4); box-shadow: 0 0 0 transparent; }
+        }
+      `}} />
+      <div className="space-y-4">
+      {/* Section Header */}
+      <div className="flex items-center gap-4 px-2 pb-2 border-b border-white/[0.05]">
+        <div className="relative flex items-center justify-center w-2 h-2">
+          <div className="absolute inset-0 rounded-full bg-[#ff3366] animate-ping opacity-75" />
+          <div className="relative w-1.5 h-1.5 rounded-full bg-[#ff3366]" />
+        </div>
+        <h3 className="font-mono text-[11px] font-black uppercase tracking-[0.4em] text-white">
+          Active Threats
         </h3>
-        <div className="h-px flex-1 bg-red-500/10" />
-        <span className="font-mono text-[9px] text-gray-600 uppercase tracking-widest">
-          {alerts.length} active
+        <div className="flex-1" />
+        <span className="font-mono text-[9px] text-gray-500 uppercase tracking-widest bg-white/[0.05] px-2 py-1 rounded">
+          {alerts.length} Detects
         </span>
       </div>
 
-      <div className="space-y-2.5">
-        {alerts.map((alert) => {
-          const cfg =
-            severityConfig[alert.severity] ?? severityConfig["MEDIUM"];
+      <div className="space-y-3">
+        {alerts.map((alert, i) => {
+          const cfg = severityConfig[alert.severity] ?? severityConfig["MEDIUM"];
+          const isCritical = alert.severity === "CRITICAL";
+
           return (
             <div
               key={alert.id}
-              className="relative p-5 rounded-2xl border transition-all duration-300 overflow-hidden"
+              className={`group relative p-5 rounded-2xl transition-all duration-500 overflow-hidden backdrop-blur-2xl ${
+                mounted ? "animate-[fadeInRight_0.4s_ease-out_forwards]" : "opacity-0"
+              } ${isCritical ? "animate-[pulseBorderCritical_2s_infinite]" : ""}`}
               style={{
                 background: cfg.bg,
-                borderColor: cfg.border,
+                border: `1px solid ${cfg.border}`,
+                boxShadow: `0 4px 20px ${cfg.glow}`,
+                animationDelay: `${i * 100}ms`,
               }}
             >
-              {/* Left severity stripe */}
+              
+              {/* Left severity indicator line */}
               <div
-                className="absolute left-0 top-0 bottom-0 w-[2.5px] rounded-r-full"
-                style={{ background: cfg.color }}
+                className="absolute left-0 top-0 bottom-0 w-[3px]"
+                style={{ background: cfg.color, boxShadow: `0 0 10px ${cfg.color}80` }}
               />
 
-              <div className="pl-2 space-y-3">
-                {/* Header row */}
-                <div className="flex items-center justify-between gap-3">
+              <div className="pl-3 space-y-4">
+                {/* Header Row */}
+                <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    {/* Severity badge */}
                     <span
-                      className="font-mono text-[9px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-full border"
+                      className="font-mono text-[9px] font-black uppercase tracking-[0.25em] px-2 py-1 rounded bg-black/50 border shadow-sm"
                       style={{
                         color: cfg.color,
                         borderColor: cfg.border,
-                        background: cfg.bg,
                       }}
                     >
                       {alert.severity}
                     </span>
-                    {/* Type */}
-                    <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gray-600">
+                    <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-white truncate max-w-[120px] sm:max-w-[200px]">
                       {alert.type}
                     </span>
                   </div>
-                  {/* Timestamp */}
-                  <span className="font-mono text-[9px] text-gray-700 shrink-0">
+                  <span className="font-mono text-[9px] text-gray-500 shrink-0 tracking-widest bg-black/40 px-2 py-1 rounded">
                     {formatAlertTime(alert.timestamp)}
                   </span>
                 </div>
 
                 {/* Description */}
-                <p className="text-[13px] font-medium leading-relaxed text-gray-300">
+                <p className="text-[13px] font-sans text-gray-400 leading-snug">
                   {alert.description}
                 </p>
 
-                {/* Tags */}
-                {alert.metadata?.tags?.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {alert.metadata.tags.map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="font-mono text-[8px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-white/[0.03] border border-white/[0.05] text-gray-600"
-                      >
-                        #{tag.replace(/\s+/g, "_")}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {/* Risk score */}
+                {/* Footer details: score & action */}
                 {alert.metadata?.riskScore && (
-                  <div className="flex items-center justify-between pt-1 border-t border-white/[0.04]">
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono text-[9px] text-gray-600 uppercase tracking-widest">
-                        Risk Score
+                  <div className="pt-3 border-t border-white/[0.05] flex items-center justify-between">
+                    <div className="flex items-center gap-3 w-2/3">
+                      <span className="font-mono text-[8px] text-gray-600 uppercase tracking-[0.2em] shrink-0">
+                        Risk Level
                       </span>
-                      <div className="flex-1 w-24 h-1 bg-white/[0.05] rounded-full overflow-hidden">
+                      <div className="flex-1 h-1.5 bg-black/80 rounded-full overflow-hidden border border-white/[0.05]">
                         <div
-                          className="h-full rounded-full transition-all duration-500"
+                          className="h-full rounded-full transition-all duration-1000 ease-out"
                           style={{
                             width: `${alert.metadata.riskScore}%`,
-                            background: cfg.color,
+                            background: `linear-gradient(90deg, transparent, ${cfg.color})`,
+                            boxShadow: `0 0 10px ${cfg.color}`,
                           }}
                         />
                       </div>
                       <span
-                        className="font-mono text-[9px] font-black"
+                        className="font-mono text-[10px] font-black tabular-nums"
                         style={{ color: cfg.color }}
                       >
                         {alert.metadata.riskScore}%
                       </span>
                     </div>
+
                     <button
-                      className="font-mono text-[9px] font-black uppercase tracking-widest hover:underline transition-colors"
-                      style={{ color: cfg.color }}
+                      className="group/btn flex items-center gap-1 font-mono text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded bg-white/[0.02] border hover:bg-white/[0.05] transition-all"
+                      style={{ borderColor: cfg.border, color: cfg.color }}
                     >
-                      Investigate →
+                      Investigate
+                      <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
                     </button>
                   </div>
                 )}
@@ -174,18 +183,24 @@ export default function ComplianceAlerts({
         })}
 
         {alerts.length === 0 && (
-          <div className="py-16 flex flex-col items-center justify-center border border-dashed border-white/[0.05] rounded-2xl bg-[#0a0a0a] font-mono text-center space-y-2">
-            <div className="w-px h-8 bg-[#008751]/30 mx-auto" />
-            <p className="text-[#008751]/60 text-[9px] uppercase tracking-[0.3em]">
-              PERIMETER SECURE
-            </p>
-            <p className="text-gray-700 text-[9px] uppercase tracking-widest">
-              No active breaches detected
-            </p>
-            <div className="w-px h-8 bg-[#008751]/30 mx-auto" />
+          <div className="py-16 flex flex-col items-center justify-center border border-dashed border-white/[0.05] rounded-2xl bg-white/[0.01] backdrop-blur-xl font-mono text-center space-y-4">
+            <div className="w-8 h-8 rounded-full border border-[#00e676]/30 flex items-center justify-center">
+              <svg className="w-4 h-4 text-[#00e676]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-[#00e676] text-[10px] font-black uppercase tracking-[0.4em]">
+                PERIMETER SECURE
+              </p>
+              <p className="text-gray-600 text-[9px] uppercase tracking-widest mt-1">
+                Zero anomaly detects
+              </p>
+            </div>
           </div>
         )}
       </div>
     </div>
+    </>
   );
 }

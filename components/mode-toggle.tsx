@@ -2,9 +2,20 @@
 
 import * as React from "react";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
+
+// Pages that are dark-only and should not show the mode toggle
+const DARK_ONLY_PATHS = ["/lab", "/nexus-school-os", "/admin/intelligence"];
 
 export function ModeToggle() {
   const { setTheme, theme } = useTheme();
+  const pathname = usePathname();
+
+  // Hide on dark-only pages (exact or nested)
+  const isDarkOnly = DARK_ONLY_PATHS.some(
+    (p) => pathname === p || pathname.startsWith(p + "/")
+  );
+  if (isDarkOnly) return null;
 
   return (
     <button
