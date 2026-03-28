@@ -31,9 +31,9 @@ function formatTerminalDate(raw: string): string {
 }
 
 // Branded no-image fallback
-function ImageFallback({ category }: { category: string }) {
+function ImageFallback({ category, mobileOnly = false }: { category: string, mobileOnly?: boolean }) {
   return (
-    <div className="relative w-full h-48 mb-4 overflow-hidden rounded-xl border border-white/5 bg-[#0a0a0a] flex items-center justify-center">
+    <div className={`relative w-full ${mobileOnly ? 'h-56 mb-6 rounded-xl' : 'h-full min-h-[220px]'} overflow-hidden border border-white/5 bg-[#0a0a0a] flex items-center justify-center`}>
       {/* Scanline overlay */}
       <div
         className="absolute inset-0 pointer-events-none z-10 opacity-[0.06]"
@@ -48,18 +48,18 @@ function ImageFallback({ category }: { category: string }) {
         {category.replace(/-/g, " ")}
       </span>
       {/* Center label */}
-      <div className="relative z-20 flex flex-col items-center gap-3">
+      <div className="relative z-20 flex flex-col items-center gap-4">
         <div className="w-px h-8 bg-[#008751]/40" />
-        <span className="font-mono text-[9px] text-[#008751]/60 uppercase tracking-[0.3em]">
+        <span className="font-mono text-xs text-[#008751]/60 uppercase tracking-[0.3em]">
           [ VISUAL FEED UNAVAILABLE ]
         </span>
         <div className="w-px h-8 bg-[#008751]/40" />
       </div>
       {/* Corner grid marks */}
-      <div className="absolute top-3 left-3 w-4 h-4 border-t border-l border-[#ccff00]/20" />
-      <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-[#ccff00]/20" />
-      <div className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-[#ccff00]/20" />
-      <div className="absolute bottom-3 right-3 w-4 h-4 border-b border-r border-[#ccff00]/20" />
+      <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-[#ccff00]/20" />
+      <div className="absolute top-4 right-4 w-4 h-4 border-t border-r border-[#ccff00]/20" />
+      <div className="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-[#ccff00]/20" />
+      <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-[#ccff00]/20" />
     </div>
   );
 }
@@ -78,39 +78,29 @@ export default function IntelligenceCard({
   const terminalDate = formatTerminalDate(date);
 
   const CardContent = (
-    <div className="relative group overflow-hidden rounded-[2rem] border-l-[3px] border-t border-r border-b border-t-white/5 border-r-white/5 border-b-white/5 border-l-[#008751] bg-[#0d0d0d] transition-all duration-500 hover:border-l-[#ccff00] hover:bg-[#111] flex flex-col h-full shadow-lg">
+    <div className="relative group overflow-hidden rounded-[2rem] border-l-[3px] border-t border-r border-b border-t-white/5 border-r-white/5 border-b-white/5 border-l-[#008751] bg-[#0d0d0d] transition-all duration-500 hover:border-l-[#ccff00] hover:bg-[#111] flex flex-col md:flex-row md:items-stretch h-full shadow-lg hover:-translate-y-1 hover:shadow-2xl">
 
       {/* CLASSIFIED hover stamp */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div
-          className="border-[3px] border-red-600/20 px-6 py-2 rotate-[-12deg] select-none"
+          className="border-[3px] border-red-600/20 px-8 py-3 rotate-[-12deg] select-none"
           style={{ transform: "rotate(-12deg)" }}
         >
-          <span className="font-black text-[28px] tracking-[0.3em] text-red-600/[0.07] uppercase">
+          <span className="font-black text-[32px] tracking-[0.3em] text-red-600/[0.07] uppercase">
             CLASSIFIED
           </span>
         </div>
       </div>
 
       {/* Hover glow accent */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#ccff00]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-[#ccff00]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 flex flex-col h-full p-5 md:p-6">
-        {/* Header: category + timestamp */}
-        <div className="flex justify-between items-start mb-4 gap-2">
-          <span className="font-mono text-[10px] font-black text-[#008751] uppercase tracking-[0.2em]">
-            {category}
-          </span>
-          <span className="font-mono text-[9px] text-gray-600 uppercase tracking-wider shrink-0">
-            {terminalDate}
-          </span>
-        </div>
-
-        {/* Image or fallback */}
+      {/* ── DESKTOP IMAGE / FALLBACK LEFT PANE ── */}
+      <div className="hidden md:block md:w-2/5 relative border-r border-white/5 overflow-hidden">
         {showFallback ? (
           <ImageFallback category={category} />
         ) : (
-          <div className="relative w-full h-48 mb-4 overflow-hidden rounded-xl border border-white/5 group-hover:border-[#ccff00]/20 transition-all">
+          <>
             {/* Scanline overlay on image */}
             <div
               className="absolute inset-0 pointer-events-none z-10 opacity-[0.04]"
@@ -123,35 +113,75 @@ export default function IntelligenceCard({
               src={image!}
               alt={title}
               fill
-              className="object-cover opacity-70 group-hover:opacity-90 transition-all duration-500 group-hover:scale-105"
+              className="object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
               onError={() => setImgError(true)}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d]/90 via-transparent to-transparent" />
-          </div>
+            {/* Horizontal gradient mapping into text block */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0d0d0d]/90 group-hover:to-[#111]/90 transition-colors" />
+          </>
         )}
+      </div>
+
+      {/* ── RIGHT/MAIN TEXT PANE ── */}
+      <div className="relative z-10 flex flex-col md:flex-grow md:w-3/5 h-full p-6 md:p-8">
+        
+        {/* Header: category + timestamp */}
+        <div className="flex justify-between items-center mb-5 gap-3">
+          <span className="font-mono text-xs font-black text-[#008751] uppercase tracking-[0.2em]">
+            {category}
+          </span>
+          <span className="font-mono text-xs text-gray-500 uppercase tracking-wider shrink-0 hidden sm:block">
+            {terminalDate}
+          </span>
+        </div>
+
+        {/* ── MOBILE IMAGE (HIDDEN ON MD) ── */}
+        <div className="block md:hidden">
+          {showFallback ? (
+            <ImageFallback category={category} mobileOnly={true} />
+          ) : (
+            <div className="relative w-full h-56 mb-6 overflow-hidden rounded-xl border border-white/5 group-hover:border-[#ccff00]/20 transition-all">
+              <div
+                className="absolute inset-0 pointer-events-none z-10 opacity-[0.04]"
+                style={{
+                  backgroundImage:
+                    "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.2) 2px, rgba(255,255,255,0.2) 4px)",
+                }}
+              />
+              <Image
+                src={image!}
+                alt={title}
+                fill
+                className="object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+                onError={() => setImgError(true)}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d]/90 via-transparent to-transparent group-hover:from-[#111]/90 transition-colors" />
+            </div>
+          )}
+        </div>
 
         {/* Title */}
-        <h3 className="text-[22px] md:text-[26px] font-black text-white group-hover:text-[#ccff00] transition-colors duration-300 leading-[1.1] uppercase tracking-tighter">
+        <h3 className="text-2xl md:text-3xl font-black text-white group-hover:text-[#ccff00] transition-colors duration-300 leading-[1.15] uppercase tracking-tighter">
           {title}
         </h3>
 
         {/* Excerpt */}
-        <p className="mt-3 text-[14px] text-gray-500 leading-[1.8] line-clamp-3 font-medium">
+        <p className="mt-4 text-base text-gray-400 leading-[1.7] line-clamp-3 font-medium flex-grow">
           {excerpt}
         </p>
 
         {/* Footer CTA */}
         {href && (
-          <div className="mt-6 pt-4 border-t border-white/[0.05] flex items-center justify-between">
-            <div className="flex items-center gap-2 text-[10px] font-black text-white uppercase tracking-[0.15em] group-hover:translate-x-1 transition-transform duration-300">
+          <div className="mt-8 pt-5 border-t border-white/[0.05] flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs font-black text-white uppercase tracking-[0.15em] group-hover:translate-x-1 transition-transform duration-300">
               {actionText}
-              <svg className="w-4 h-4 text-[#ccff00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-[#ccff00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-[9px] text-gray-600 font-mono uppercase tracking-widest">AGENT ACTIVE</span>
-              <div className="w-1.5 h-1.5 rounded-full bg-[#008751] animate-pulse" />
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 font-mono uppercase tracking-widest">AGENT ACTIVE</span>
+              <div className="w-2 h-2 rounded-full bg-[#008751] animate-pulse" />
             </div>
           </div>
         )}

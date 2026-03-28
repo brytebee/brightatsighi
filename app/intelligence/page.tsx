@@ -1,6 +1,8 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import IntelligenceCard from "@/components/IntelligenceCard";
+import Link from "next/link";
+import { revalidatePath } from "next/cache";
 
 async function getIntelligence(category?: string) {
   try {
@@ -56,11 +58,49 @@ function formatSyncDate(ts: string | Date | null): string {
   }
 }
 
-export default async function IntelligencePage() {
-  const reports = await getIntelligence();
+type Props = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export default async function IntelligencePage(props: Props) {
+  const searchParams = await props.searchParams;
+  const categoryRaw = searchParams?.category;
+  const categoryParam = typeof categoryRaw === "string" ? categoryRaw : "all";
+
+  const reports = await getIntelligence(categoryParam);
   const heartbeats = await getHeartbeats();
   const latestHeartbeat = heartbeats[0] ?? null;
   const nodeCount = heartbeats.length;
+
+  async function simulateHealthCheck() {
+    "use server";
+    await (prisma as any).agentHeartbeat.create({
+      data: { agentName: "nexal_core", status: "OPERATIONAL", task: "system_ping" },
+    });
+    revalidatePath("/intelligence");
+  }
+
+  async function simulateResync() {
+    "use server";
+    const seed = Math.floor(Math.random() * 100000);
+    const imagePrompt = `highly detailed cinematic futuristic intelligence report cover art about system breach intercept. Cyberpunk data visualization, neon green accents on dark background, masterpiece, 8k resolution, photorealistic`;
+    await (prisma.writing as any).create({
+      data: {
+        title: "NEXAL SYSTEM INTERCEPT",
+        description: "Automated packet sniff via $ exec resync --force. Significant anomalies detected in the mainframe.",
+        category: "tech-intelligence",
+        status: "APPROVED",
+        published: true,
+        date: new Date().toISOString(),
+        image: `https://image.pollinations.ai/prompt/${encodeURIComponent(imagePrompt)}?width=1200&height=630&nologo=true&seed=${seed}`,
+        content: "<p>Automated payload generated via manual sysadm trigger.</p>",
+      },
+    });
+    await (prisma as any).agentHeartbeat.create({
+      data: { agentName: "architect_agent", status: "RESYNC_COMPLETE", task: "manual_override" },
+    });
+    revalidatePath("/intelligence");
+  }
 
   return (
     // Force dark regardless of theme toggle
@@ -98,12 +138,12 @@ export default async function IntelligencePage() {
           <div className="w-px h-5 bg-white/[0.06]" />
 
           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#008751] to-[#ccff00] p-[1.5px]">
-            <div className="w-full h-full rounded-full bg-black flex items-center justify-center font-black text-xs tracking-tighter text-[#008751]">
+            <div className="w-full h-full rounded-full bg-black flex items-center justify-center font-black text-sm tracking-tighter text-[#008751]">
               BE
             </div>
           </div>
           <div>
-            <p className="text-[10px] text-gray-600 font-mono leading-none mb-1 uppercase tracking-widest">
+            <p className="text-xs text-gray-500 font-mono leading-none mb-1 uppercase tracking-widest">
               WELCOME BACK,
             </p>
             <h2 className="text-sm font-black tracking-tighter text-white">
@@ -133,7 +173,7 @@ export default async function IntelligencePage() {
         {/* ── HERO: MISSION CONTROL TERMINAL ── */}
         <div className="relative w-full rounded-[2.5rem] overflow-hidden border border-white/[0.07] group">
           {/* Hero image */}
-          <div className="relative w-full h-[280px] md:h-[380px]">
+          <div className="relative w-full h-[220px] md:h-[280px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/mission-control-hero.png"
@@ -157,7 +197,7 @@ export default async function IntelligencePage() {
             {/* Terminal blink indicator */}
             <div className="flex items-center gap-3 mb-4">
               <div className="px-3 py-1.5 bg-black/60 backdrop-blur-md border border-[#008751]/30 rounded-full">
-                <span className="font-mono text-[10px] font-black text-[#008751] uppercase tracking-[0.25em]">
+                <span className="font-mono text-xs font-black text-[#008751] uppercase tracking-[0.25em]">
                   {">"} SURVEILLANCE_MODE: ACTIVE{" "}
                   <span className="animate-pulse">█</span>
                 </span>
@@ -170,7 +210,7 @@ export default async function IntelligencePage() {
             </h1>
 
             {/* Terminal ticker */}
-            <div className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[9px] text-[#008751] font-black uppercase tracking-[0.2em]">
+            <div className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-[#008751] font-black uppercase tracking-[0.2em]">
               <span>[ REPORTS: 0{reports.length} ]</span>
               <span>[ NODES: {nodeCount > 0 ? `ACTIVE ×${nodeCount}` : "STANDBY"} ]</span>
               <span>[ LAST SYNC: {formatSyncDate(latestHeartbeat?.timestamp)} ]</span>
@@ -179,7 +219,7 @@ export default async function IntelligencePage() {
         </div>
 
         {/* ── HEARTBEAT STATUS TERMINAL ── */}
-        <div className="w-full bg-[#0a0a0a] p-6 rounded-[2.5rem] border border-white/[0.05] relative overflow-hidden font-mono">
+        <div className="w-full bg-[#0a0a0a] p-8 rounded-[2.5rem] border border-white/[0.05] relative overflow-hidden font-mono">
           {/* Corner accent marks */}
           <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-[#008751]/20" />
           <div className="absolute top-4 right-4 w-4 h-4 border-t border-r border-[#008751]/20" />
@@ -193,16 +233,16 @@ export default async function IntelligencePage() {
               <div className="w-1.5 h-1.5 rounded-full bg-[#008751] animate-pulse" style={{ animationDelay: "300ms" }} />
               <div className="w-1.5 h-1.5 rounded-full bg-[#008751] animate-pulse" style={{ animationDelay: "600ms" }} />
             </div>
-            <span className="text-[9px] text-gray-600 uppercase tracking-[0.3em]">
+            <span className="text-xs text-gray-500 uppercase tracking-[0.3em]">
               NEXAL_AGENT_v6.2 // STATUS: OPERATIONAL
             </span>
           </div>
 
           {/* Terminal output lines */}
-          <div className="space-y-2 text-[11px] text-gray-500 mb-5">
+          <div className="space-y-3 text-sm text-gray-400 mb-6">
             <p>
               <span className="text-[#008751]">$</span>{" "}
-              <span className="text-gray-400">ping nexal_core</span>
+              <span className="text-gray-300">ping nexal_core</span>
             </p>
             <p className="pl-4 text-[#ccff00]/80">
               REPLY: {formatHeartbeatTime(latestHeartbeat?.timestamp)} — RTT 12ms
@@ -226,24 +266,58 @@ export default async function IntelligencePage() {
             </p>
           </div>
 
-          {/* Action commands */}
-          <div className="flex gap-2">
-            <button className="flex-1 py-3 bg-white/[0.03] hover:bg-white/[0.07] rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] transition-colors border border-white/[0.05] text-gray-500 hover:text-[#008751] hover:border-[#008751]/30">
-              $ run health_check
-            </button>
-            <button className="flex-1 py-3 bg-white/[0.03] hover:bg-white/[0.07] rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] transition-colors border border-white/[0.05] text-gray-500 hover:text-[#ccff00] hover:border-[#ccff00]/20">
-              $ exec resync --force
-            </button>
+          <div className="flex gap-4 mt-6">
+            <form action={simulateHealthCheck} className="flex-1">
+              <button type="submit" className="w-full h-full py-4 bg-white/[0.03] hover:bg-white/[0.07] rounded-2xl text-xs font-black uppercase tracking-[0.2em] transition-colors border border-white/[0.05] text-gray-400 hover:text-white hover:border-[#008751]/30">
+                $ run health_check
+              </button>
+            </form>
+            <form action={simulateResync} className="flex-1">
+              <button type="submit" className="w-full h-full py-4 bg-white/[0.03] hover:bg-white/[0.07] rounded-2xl text-xs font-black uppercase tracking-[0.2em] transition-colors border border-white/[0.05] text-gray-400 hover:text-white hover:border-[#ccff00]/20">
+                $ exec resync --force
+              </button>
+            </form>
           </div>
         </div>
 
+        {/* ── INTELLIGENCE CATEGORY FILTERS ── */}
+        <div className="pt-2 pb-1 relative z-20">
+          <div className="flex gap-3 overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] snap-x">
+            {[
+              { id: "all", label: "Global Feed" },
+              { id: "esports-intelligence", label: "Esports Nexus" },
+              { id: "tech-intelligence", label: "Tech Core" },
+              { id: "fintech-policy", label: "Fintech Policy" },
+              { id: "ai-systems", label: "AI Systems" },
+            ].map((cat) => {
+              const isActive = categoryParam === cat.id;
+              return (
+                <Link
+                  key={cat.id}
+                  href={`/intelligence${cat.id === "all" ? "" : `?category=${cat.id}`}`}
+                  className={`snap-start whitespace-nowrap px-5 py-3 rounded-full font-mono text-xs uppercase tracking-widest transition-all duration-300 border ${
+                    isActive
+                      ? "bg-black border-[#ccff00]/50 text-[#ccff00] shadow-[0_0_15px_rgba(204,255,0,0.15)]"
+                      : "bg-white/[0.02] border-white/[0.05] text-gray-400 hover:text-white hover:border-white/20 hover:bg-white/[0.05]"
+                  }`}
+                >
+                  {cat.label}
+                  {isActive && <div className="mt-1 h-0.5 w-4 bg-[#ccff00] rounded-full shadow-[0_0_8px_#ccff00] mx-auto" />}
+                </Link>
+              );
+            })}
+          </div>
+          {/* Fading edge for scroll hint */}
+          <div className="absolute right-0 top-0 bottom-4 w-12 bg-gradient-to-l from-black to-transparent pointer-events-none" />
+        </div>
+
         {/* ── INTELLIGENCE FEED HEADER ── */}
-        <div className="flex items-center justify-between px-2 pt-2">
-          <h2 className="text-[10px] font-black font-mono uppercase tracking-[0.3em] text-white/20">
+        <div className="flex items-center justify-between px-2 pt-6">
+          <h2 className="text-xs font-black font-mono uppercase tracking-[0.3em] text-white/30">
             Intelligence Feed
           </h2>
-          <div className="h-px flex-1 bg-white/[0.04] mx-4" />
-          <span className="text-[9px] font-mono text-[#008751] font-bold">
+          <div className="h-px flex-1 bg-white/[0.06] mx-6" />
+          <span className="text-xs font-mono text-[#008751] font-bold">
             0{reports.length} Reports
           </span>
         </div>
@@ -265,8 +339,8 @@ export default async function IntelligencePage() {
             ))
           ) : (
             // Premium empty state
-            <div className="py-20 flex flex-col items-center justify-center border border-white/5 bg-[#0a0a0a] rounded-[2.5rem] font-mono">
-              <div className="space-y-2 text-center text-[10px] text-gray-600 uppercase tracking-[0.2em]">
+            <div className="py-24 flex flex-col items-center justify-center border border-white/5 bg-[#0a0a0a] rounded-[2.5rem] font-mono">
+              <div className="space-y-3 text-center text-xs text-gray-500 uppercase tracking-[0.2em]">
                 <p className="text-[#008751]">
                   {">"} CONNECTING TO INTELLIGENCE NODES
                   <span className="animate-pulse">█</span>
@@ -291,41 +365,41 @@ export default async function IntelligencePage() {
       {/* ── MOBILE BOTTOM NAV (Fixed, above chat bubble) ── */}
       <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-sm px-4 z-[100]">
         <div className="bg-[#0d0d0d]/95 backdrop-blur-2xl border border-white/[0.08] rounded-full p-2 flex items-center justify-between shadow-[0_20px_40px_rgba(0,0,0,0.7)]">
-          {/* Home */}
-          <button className="p-4 text-[#008751]">
+          {/* Home / Lab */}
+          <Link href="/lab" className="p-4 text-[#008751] flex flex-col items-center">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
-            <div className="w-1 h-1 rounded-full bg-[#ccff00] mx-auto mt-1" />
-          </button>
+            <div className="w-1 h-1 rounded-full bg-[#ccff00] mt-1" />
+          </Link>
           {/* Search */}
-          <button className="p-4 text-gray-600 hover:text-white transition-colors">
+          <Link href="/intelligence?search=true" className="p-4 text-gray-600 hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-          </button>
+          </Link>
           {/* Eagle CTA — always pulsing */}
-          <div className="relative -mt-10 group">
+          <Link href="/admin/intelligence" className="relative -mt-10 group cursor-pointer block">
             <div className="absolute -inset-3 rounded-full bg-[#008751]/20 animate-ping opacity-75" />
             <div className="absolute -inset-1 rounded-full bg-[#008751]/30 animate-pulse" />
-            <button className="relative w-14 h-14 bg-[#008751] rounded-full flex items-center justify-center text-white shadow-[0_0_24px_rgba(0,135,81,0.5)] border-4 border-black active:scale-90 transition-transform duration-150">
+            <div className="relative w-14 h-14 bg-[#008751] rounded-full flex items-center justify-center text-white shadow-[0_0_24px_rgba(0,135,81,0.5)] border-4 border-black group-active:scale-90 transition-transform duration-150">
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z" />
               </svg>
-            </button>
-          </div>
-          {/* History */}
-          <button className="p-4 text-gray-600 hover:text-white transition-colors">
+            </div>
+          </Link>
+          {/* History / Portfolio */}
+          <Link href="/" className="p-4 text-gray-600 hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-          </button>
+          </Link>
           {/* Profile */}
-          <button className="p-4 text-gray-600 hover:text-white transition-colors">
+          <Link href="/admin/profile" className="p-4 text-gray-600 hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
-          </button>
+          </Link>
         </div>
       </div>
     </main>

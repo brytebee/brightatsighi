@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 async function getPendingIntelligence() {
   return await (prisma.writing as any).findMany({
-    where: { category: "esports-intelligence", status: "PENDING" },
+    where: { status: "PENDING" },
     orderBy: { date: "desc" },
   });
 }
