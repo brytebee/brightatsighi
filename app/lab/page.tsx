@@ -46,21 +46,21 @@ const labs = [
     ),
   },
   {
-    id: "coming-soon-1",
-    href: null,
-    status: "IN BUILD",
-    statusColor: "#f59e0b",
+    id: "ai-pipeline",
+    href: "/lab/ai",
+    status: "LIVE",
+    statusColor: "#008751",
     version: "v1.0",
     title: "AI Pipeline Lab",
     description:
-      "A live LLM pipeline demonstrating real-time document analysis, summarisation, and structured extraction — running visibly in the browser. Coming Q2 2026.",
+      "A live LLM pipeline demonstrating real-time document analysis, summarisation, and structured extraction — running visibly in the browser.",
     tags: ["LLM", "Document AI", "Streaming", "Edge Functions"],
     metrics: [
-      { label: "Pipeline", value: "Streaming" },
-      { label: "Model", value: "TBD" },
-      { label: "ETA", value: "Q2 2026" },
+      { label: "Pipeline", value: "Streaming Object" },
+      { label: "Model", value: "Gemini 1.5 Flash" },
+      { label: "Output", value: "Strict Schema" },
     ],
-    accent: "#f59e0b",
+    accent: "#ccff00",
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
