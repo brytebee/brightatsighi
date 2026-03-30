@@ -2,6 +2,7 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { ReadingProgressBar } from "@/components/DossierProgress";
+import IntelligenceHeroImage from "@/components/IntelligenceHeroImage";
 
 async function getReport(id: string) {
   try {
@@ -113,24 +114,7 @@ export default async function PublicIntelligenceDossierPage({
           {/* ── HERO IMAGE ── */}
           {report.image && (
             <div className="relative w-full aspect-[16/9] rounded-[3rem] overflow-hidden border border-white/5 shadow-[0_40px_100px_rgba(0,0,0,0.8)] group">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={report.image}
-                alt={report.title}
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              {/* Scanlines on image */}
-              <div
-                className="absolute inset-0 pointer-events-none opacity-[0.05]"
-                style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px)",
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 px-4 py-2 bg-black/50 backdrop-blur-md rounded-2xl border border-white/5 font-mono text-[9px] font-black uppercase tracking-[0.2em] text-white/50">
-                Satellite Imagery Verified
-              </div>
+              <IntelligenceHeroImage image={report.image} title={report.title} />
             </div>
           )}
 
