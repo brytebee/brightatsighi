@@ -42,6 +42,36 @@ export default async function IntelligenceAdminPage() {
     revalidatePath("/admin/intelligence");
   }
 
+  async function regenerateImage(formData: FormData) {
+    "use server";
+    const id = formData.get("id") as string;
+    const title = formData.get("title") as string;
+    const category = formData.get("category") as string;
+
+    console.log(`\n🔄 [REGEN] Starting for id=${id} title="${title}"`);
+
+    const seed = Math.floor(Math.random() * 500);
+    // Use self-hosted /api/og endpoint — zero auth, instant, deterministic
+    // Vercel populates VERCEL_PROJECT_PRODUCTION_URL or VERCEL_URL automatically.
+    const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL 
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` 
+      : process.env.VERCEL_URL 
+        ? `https://${process.env.VERCEL_URL}` 
+        : (process.env.NEXTAUTH_URL ?? "http://localhost:3000");
+
+    const newUrl = `${baseUrl}/api/og?title=${encodeURIComponent(title)}&category=${encodeURIComponent(category ?? "intel")}&seed=${seed}`;
+
+    console.log(`🔗 [REGEN] Saving OG URL: ${newUrl}`);
+
+    await (prisma.writing as any).update({
+      where: { id },
+      data: { image: newUrl },
+    });
+    console.log(`✅ [REGEN] DB updated. Revalidating...`);
+    revalidatePath("/admin/intelligence");
+    console.log(`✅ [REGEN] Done.\n`);
+  }
+
   return (
     <div className="bg-dark-pitch min-h-screen text-white relative flex flex-col items-center">
       {/* Background Ambience */}
@@ -109,6 +139,20 @@ export default async function IntelligenceAdminPage() {
                   >
                     Open Dossier
                   </a>
+
+                  <form action={regenerateImage}>
+                    <input type="hidden" name="id" value={report.id} />
+                    <input type="hidden" name="title" value={report.title} />
+                    <input type="hidden" name="category" value={(report as any).category ?? "intel"} />
+                    <button 
+                      title="Regenerate Image"
+                      className="p-4 bg-white/5 border border-white/10 text-[#ccff00] hover:bg-white/10 hover:border-[#ccff00]/50 transition-all rounded-2xl flex items-center justify-center"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    </button>
+                  </form>
 
                   <form
                     action={approveReport}

@@ -6,11 +6,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "image.pollinations.ai",
+        hostname: "**",
       },
       {
-        protocol: "https",
-        hostname: "res.cloudinary.com",
+        protocol: "http",
+        hostname: "**",
       },
     ],
   },

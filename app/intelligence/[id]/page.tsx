@@ -189,37 +189,11 @@ export default async function PublicIntelligenceDossierPage({
 
           <div className="w-full h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
 
-          {/* ── ARTICLE BODY (scroll-reveal paragraphs) ── */}
-          <div className="space-y-6 text-[18px] text-gray-300 leading-[1.85] font-medium">
-            {paragraphs.map((para: string, i: number) => {
-              if (para.startsWith("# "))
-                return (
-                  <h2
-                    key={i}
-                    className="text-[36px] font-black uppercase tracking-tighter text-white pt-8 leading-none"
-                  >
-                    {para.replace("# ", "")}
-                  </h2>
-                );
-              if (para.startsWith("## "))
-                return (
-                  <h3
-                    key={i}
-                    className="text-[24px] font-black uppercase tracking-tighter text-white pt-6"
-                  >
-                    {para.replace("## ", "")}
-                  </h3>
-                );
-              return (
-                <p
-                  key={i}
-                  className="opacity-80 hover:opacity-100 transition-opacity duration-500"
-                >
-                  {para}
-                </p>
-              );
-            })}
-          </div>
+          {/* ── ARTICLE BODY ── */}
+          <div 
+            className="w-full text-base md:text-lg font-medium [&_p]:text-gray-300 [&_p]:leading-relaxed [&_p]:mb-6 last:[&_p]:mb-0 [&_a]:text-[#ccff00] [&_a]:no-underline hover:[&_a]:underline [&_hr]:border-white/10 [&_hr]:my-10 [&_strong]:text-white [&_img]:rounded-2xl [&_img]:my-8 [&_img]:border [&_img]:border-white/5 shadow-2xl overflow-y-auto"
+            dangerouslySetInnerHTML={{ __html: report.content || "<p class='text-gray-600 italic'>Signal lost. No intelligence data recovered.</p>" }}
+          />
 
           {/* ── TRANSMISSION FOOTER ── */}
           <footer className="pt-20 pb-16 flex flex-col items-center text-center gap-8 border-t border-white/[0.05]">

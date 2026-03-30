@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface IntelligenceCardProps {
   title: string;
@@ -73,8 +73,32 @@ export default function IntelligenceCard({
   href,
   actionText = "Open Dossier",
 }: IntelligenceCardProps) {
-  const [imgError, setImgError] = useState(false);
-  const showFallback = !image || imgError;
+  // Tier 0: original URL → Tier 1: picsum fallback → Tier 2: UNAVAILABLE
+  const picsumSeed = encodeURIComponent(title.slice(0, 20));
+  const picsumFallback = `https://picsum.photos/seed/${picsumSeed}/1200/630`;
+
+  const [imgSrc, setImgSrc] = useState(image || "");
+  const [imgFailed, setImgFailed] = useState(false);
+
+  useEffect(() => {
+    console.log(`[Card] image prop → "${image}" — resetting`);
+    if (image) { setImgSrc(image); setImgFailed(false); }
+  }, [image]);
+
+  const handleImgError = () => {
+    console.warn(`[Card] ❌ onError: "${imgSrc.slice(0, 80)}"`);
+    if (imgSrc !== picsumFallback) {
+      console.log(`[Card] → Trying picsum fallback`);
+      setImgSrc(picsumFallback);
+    } else {
+      console.warn(`[Card] → Picsum also failed. Showing UNAVAILABLE.`);
+      setImgFailed(true);
+    }
+  };
+  const handleImgLoad = () => console.log(`[Card] ✅ Loaded: "${imgSrc.slice(0, 80)}"`);
+
+  const showFallback = !image || imgFailed;
+  console.log(`[Card] render imgSrc=${imgSrc.slice(0,60)} imgFailed=${imgFailed} showFallback=${showFallback}`);
   const terminalDate = formatTerminalDate(date);
 
   const CardContent = (
@@ -110,11 +134,13 @@ export default function IntelligenceCard({
               }}
             />
             <Image
-              src={image!}
+              src={imgSrc}
               alt={title}
               fill
               className="object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
-              onError={() => setImgError(true)}
+              onError={handleImgError}
+              onLoad={handleImgLoad}
+              unoptimized
             />
             {/* Horizontal gradient mapping into text block */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0d0d0d]/90 group-hover:to-[#111]/90 transition-colors" />
@@ -149,11 +175,13 @@ export default function IntelligenceCard({
                 }}
               />
               <Image
-                src={image!}
+                src={imgSrc}
                 alt={title}
                 fill
                 className="object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
-                onError={() => setImgError(true)}
+                onError={handleImgError}
+                onLoad={handleImgLoad}
+                unoptimized
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d]/90 via-transparent to-transparent group-hover:from-[#111]/90 transition-colors" />
             </div>

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendEmailNotification } from "@/lib/core/notifications";
+import { SCHEDULE, sendReminderEmail } from "@/lib/notifications/schedule";
 
 // ─────────────────────────────────────────────────────────────
 // RSS SOURCES — free, CORS-accessible feeds grouped by category
@@ -46,6 +47,7 @@ interface RSSItem {
   description: string;
   link: string;
   pubDate: string;
+  imageUrl: string | null;
 }
 
 function extractTag(xml: string, tag: string): string {
@@ -59,7 +61,19 @@ function extractTag(xml: string, tag: string): string {
   const plainMatch = xml.match(
     new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, "i")
   );
-  return plainMatch ? plainMatch[1].trim().replace(/<[^>]+>/g, "") : "";
+  return plainMatch ? plainMatch[1].trim().replace(/<[^>]+>/g, "").slice(0, 800) : "";
+}
+
+function extractImage(xml: string): string | null {
+  const enclosure = xml.match(/<enclosure[^>]*url=["']([^"']+)["']/i);
+  if (enclosure) return enclosure[1];
+  const mediaContent = xml.match(/<media:content[^>]*url=["']([^"']+)["']/i);
+  if (mediaContent) return mediaContent[1];
+  const mediaThumb = xml.match(/<media:thumbnail[^>]*url=["']([^"']+)["']/i);
+  if (mediaThumb) return mediaThumb[1];
+  const imgTag = xml.match(/<img[^>]*src=["']([^"']+)["']/i);
+  if (imgTag) return imgTag[1];
+  return null;
 }
 
 function parseRSS(xml: string, limit = 3): RSSItem[] {
@@ -68,11 +82,16 @@ function parseRSS(xml: string, limit = 3): RSSItem[] {
 
   for (const block of itemBlocks.slice(0, limit)) {
     const title = extractTag(block, "title");
-    const description = extractTag(block, "description");
+    let description = extractTag(block, "description");
     const link = extractTag(block, "link");
     const pubDate = extractTag(block, "pubDate");
+    const imageUrl = extractImage(block);
+
+    // Filter out embedded images from description text to avoid double-rendering
+    description = description.replace(/<img[^>]*>/gi, "").replace(/<div>\s*<\/div>/gi, "").replace(/<p>\s*<\/p>/gi, "").trim();
+
     if (title && link) {
-      items.push({ title, description: description.slice(0, 280), link, pubDate });
+      items.push({ title, description, link, pubDate, imageUrl });
     }
   }
   return items;
@@ -102,6 +121,35 @@ async function isAlreadyPublished(title: string): Promise<boolean> {
   return !!existing;
 }
 
+// ── AI SYNTHESIS ─────────────────────────────────────────────────
+async function fetchAndSummarize(url: string, title: string, fallbackDesc: string): Promise<string> {
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+    const html = await res.text();
+    const pTags = html.match(/<p[^>]*>([\s\S]*?)<\/p>/gi) || [];
+    let articleText = pTags.map((p: string) => p.replace(/<[^>]+>/g, '').trim()).filter((p: string) => p.length > 50).join('\n\n');
+    
+    if (articleText.length < 200) articleText = fallbackDesc;
+
+    const prompt = `You are an elite Cybersecurity, Fintech, and Tech Executive. Write a comprehensive, highly insightful 3-paragraph Executive Point-of-View (POV) analysis on the following news. Give a clear, authoritative stance so that my social media pipeline has rich context later. Keep it strictly professional, no fluff.\n\nTitle: ${title}\nContext: ${articleText.slice(0, 3000)}`;
+    
+    const aiRes = await fetch("https://text.pollinations.ai/openai", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: [{ role: "user", content: prompt }], model: "openai" }),
+      signal: AbortSignal.timeout(15000)
+    });
+
+    if (aiRes.ok) {
+      const data = await aiRes.json();
+      return data.choices[0].message.content;
+    }
+  } catch (e) {
+    console.warn("AI Synthesis failed:", e);
+  }
+  return fallbackDesc || "Analysis deferred.";
+}
+
 // ─────────────────────────────────────────────────────────────
 // ARTICLE CREATOR — saves directly as APPROVED so it shows up
 // ─────────────────────────────────────────────────────────────
@@ -112,31 +160,38 @@ async function createIntelligenceArticle(
   const alreadyExists = await isAlreadyPublished(item.title);
   if (alreadyExists) return null;
 
-  const seed = Math.floor(Math.random() * 999999);
-  const imagePrompt = `cinematic intelligence briefing cover for "${item.title}". Cyberpunk, neon green on dark obsidian, dramatic, masterpiece, 8k`;
-  const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(imagePrompt)}?width=1200&height=630&nologo=true&seed=${seed}`;
+  let finalImageUrl = item.imageUrl;
+  let usedNativeImage = !!finalImageUrl;
 
-  const content = `
-<p>${item.description || "Developing intelligence. Full analysis incoming."}</p>
-<hr/>
-<p><strong>Source:</strong> <a href="${item.link}" target="_blank" rel="noopener">${item.link}</a></p>
-<p><em>Auto-processed by Eagle Eye Intelligence System • ${new Date().toUTCString()}</em></p>
-`.trim();
+  if (!finalImageUrl) {
+    const seed = Math.floor(Math.random() * 999999);
+    const imagePrompt = `cinematic intelligence briefing cover for "${item.title}". Cyberpunk, neon green on dark obsidian, dramatic, masterpiece, 8k`;
+    finalImageUrl = `https://gen.pollinations.ai/image/${encodeURIComponent(imagePrompt)}?width=1200&height=630&nologo=true&seed=${seed}`;
+  }
+
+  // Generate deep synthesis POV
+  const synthesizedContent = await fetchAndSummarize(item.link, item.title, item.description);
+  const htmlContent = `${synthesizedContent.split('\n\n').map(p => `<p>${p}</p>`).join('')}<hr/><p><a href="${item.link}">${item.link}</a></p>`;
 
   const article = await (prisma.writing as any).create({
     data: {
       title: item.title.slice(0, 200),
       description: item.description || item.title,
-      content,
+      content: htmlContent,
       category,
       status:    "APPROVED",   // ← auto-approved, shows up immediately
       published: true,
       isAutomated: true,
       sourceUrl: item.link,
-      image: imageUrl,
+      image: finalImageUrl,
       date: item.pubDate ? new Date(item.pubDate) : new Date(),
     },
   });
+
+  // Pre-warm the Pollinations.ai image generation if an AI fallback was used
+  if (!usedNativeImage) {
+    fetch(finalImageUrl as string, { signal: AbortSignal.timeout(10000) }).catch(() => {});
+  }
 
   await (prisma as any).agentHeartbeat.create({
     data: {
@@ -200,6 +255,20 @@ export async function GET(req: Request) {
       <p><small>Eagle Eye Intelligence System • ${new Date().toUTCString()}</small></p>
       `
     );
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // LEGACY MORNING-ACTION SCHEDULE TRIGGER
+  // ─────────────────────────────────────────────────────────────
+  try {
+    const todayStr = new Date().toISOString().split("T")[0];
+    const action = SCHEDULE.find((a) => a.date === todayStr);
+    if (action) {
+      await sendReminderEmail("action", action);
+      console.log(`✉️ legacy morning-action triggered for ${todayStr}`);
+    }
+  } catch (err) {
+    console.error("❌ Schedule email failure:", err);
   }
 
   return NextResponse.json({

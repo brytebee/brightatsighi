@@ -175,21 +175,36 @@ export default async function IntelligenceDossierPage({
               />
             </div>
 
-            {/* Field: Content */}
-            <div className="group space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="h-[1px] w-8 bg-eagles-green/40" />
-                <label className="text-[10px] font-black uppercase tracking-[0.4em] text-eagles-green opacity-60">
-                  Full Synthesis (MD)
-                </label>
+            {/* Field: Content Split */}
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+              <div className="group space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="h-px w-8 bg-eagles-green/40" />
+                  <label className="text-[10px] font-black uppercase tracking-[0.4em] text-eagles-green opacity-60">
+                    Raw Synthesis (HTML)
+                  </label>
+                </div>
+                <textarea
+                  name="content"
+                  defaultValue={report.content || ""}
+                  rows={20}
+                  className="w-full bg-[#080808] border border-white/5 rounded-[2.5rem] p-8 text-[11px] font-mono leading-relaxed text-gray-400 focus:outline-none focus:border-electric-lime/20 transition-all shadow-inner selection:bg-electric-lime/20"
+                  placeholder="Finalize the tactical synthesis..."
+                />
               </div>
-              <textarea
-                name="content"
-                defaultValue={report.content || ""}
-                rows={18}
-                className="w-full bg-[#080808] border border-white/5 rounded-[2.5rem] p-10 text-sm font-mono leading-relaxed text-gray-400 focus:outline-none focus:border-electric-lime/20 transition-all shadow-inner selection:bg-electric-lime/20"
-                placeholder="Finalize the tactical synthesis..."
-              />
+
+              <div className="space-y-4 flex flex-col">
+                <div className="flex items-center gap-4">
+                  <div className="h-px w-8 bg-eagles-green/40" />
+                  <label className="text-[10px] font-black uppercase tracking-[0.4em] text-eagles-green opacity-60 flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                    Public Render
+                  </label>
+                </div>
+                <div className="flex-1 w-full min-h-[300px] bg-white/2 border border-white/5 rounded-[2.5rem] p-8 md:p-12 [&_p]:text-gray-300 [&_p]:leading-relaxed [&_p]:mb-4 last:[&_p]:mb-0 [&_a]:text-electric-lime [&_a]:no-underline hover:[&_a]:underline [&_hr]:border-white/10 [&_hr]:my-8 [&_strong]:text-white shadow-2xl overflow-y-auto">
+                  <div dangerouslySetInnerHTML={{ __html: report.content || "<p class='text-gray-600 italic text-sm'>No content synthesized.</p>" }} />
+                </div>
+              </div>
             </div>
           </div>
             <div className="flex justify-start">
