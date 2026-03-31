@@ -38,6 +38,23 @@ function formatDossierDate(raw: string | Date): string {
   }
 }
 
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const report = await getReport(id);
+  if (!report) return { title: "Intelligence Dossier" };
+
+  return {
+    title: `${report.title} | Intelligence`,
+    description: report.description || "Classified intelligence brief.",
+  };
+}
+
 export default async function PublicIntelligenceDossierPage({
   params,
 }: {

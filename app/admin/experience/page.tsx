@@ -1,5 +1,11 @@
 import Link from "next/link";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Experience Management | Admin",
+};
+
 export default function ExperiencePage() {
   return (
     <div>

@@ -4,6 +4,12 @@ import TeamMemberRow from "@/components/admin/TeamMemberRow";
 
 export const dynamic = "force-dynamic";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Team Access | Admin",
+};
+
 export default async function TeamPage() {
   let members: Awaited<ReturnType<typeof getTeamMembers>> = [];
   let error: string | null = null;

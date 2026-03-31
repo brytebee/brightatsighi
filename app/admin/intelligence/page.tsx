@@ -10,6 +10,12 @@ async function getPendingIntelligence() {
   });
 }
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Intelligence Management | Admin",
+};
+
 export default async function IntelligenceAdminPage() {
   const pendingReports = await getPendingIntelligence();
 

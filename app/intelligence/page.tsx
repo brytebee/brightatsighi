@@ -62,6 +62,11 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
+export const metadata = {
+  title: "Intelligence Hub",
+  description: "Classified engineering logs and systemic anomalies feed.",
+};
+
 export default async function IntelligencePage(props: Props) {
   const searchParams = await props.searchParams;
   const categoryRaw = searchParams?.category;
