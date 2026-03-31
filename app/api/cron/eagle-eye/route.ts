@@ -179,8 +179,8 @@ async function createIntelligenceArticle(
       description: item.description || item.title,
       content: htmlContent,
       category,
-      status:    "APPROVED",   // ← auto-approved, shows up immediately
-      published: true,
+      status:    "PENDING",    // ← waits in /admin/intelligence for your approval
+      published: false,
       isAutomated: true,
       sourceUrl: item.link,
       image: finalImageUrl,
@@ -197,7 +197,7 @@ async function createIntelligenceArticle(
     data: {
       agentName: "Eagle-Eye",
       task: "Intelligence Acquisition",
-      status: "PUBLISHED",
+      status: "PENDING_REVIEW",
       evidence: article.id,
     },
   });
@@ -243,12 +243,14 @@ export async function GET(req: Request) {
       .join("");
 
     await sendEmailNotification(
-      `🦅 Eagle Eye: ${totalPublished} intelligence brief${totalPublished === 1 ? "" : "s"} published`,
+      `🦅 Eagle Eye: ${totalPublished} brief${totalPublished === 1 ? "" : "s"} queued for review`,
       `
       <h2>🦅 Eagle Eye Morning Sweep</h2>
-      <p><strong>${totalPublished} new intelligence brief${totalPublished === 1 ? "" : "s"}</strong> were automatically published to <a href="${process.env.NEXTAUTH_URL ?? "https://britebee.vercel.app"}/intelligence">/intelligence</a>.</p>
+      <p><strong>${totalPublished} new intelligence brief${totalPublished === 1 ? "" : "s"}</strong> have been drafted and are waiting for your approval.</p>
+      <p>👉 <a href="${process.env.NEXTAUTH_URL ?? "https://britebee.vercel.app"}/admin/intelligence"><strong>Review in Mission Control →</strong></a></p>
+      <p>Open each dossier, read the synthesis, then click <strong>"Authorize Release"</strong> to publish to the public feed.</p>
       <table border="1" cellpadding="6" style="border-collapse:collapse;font-family:monospace">
-        <thead><tr><th>Source</th><th>Published</th><th>Skipped (dup)</th></tr></thead>
+        <thead><tr><th>Source</th><th>Queued</th><th>Skipped (dup)</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
       <hr/>

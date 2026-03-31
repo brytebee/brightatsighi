@@ -1,8 +1,48 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from "next";
 import { portfolioData } from "@/lib/data";
 import ScrollReveal from "@/components/ScrollReveal";
+
+export const metadata: Metadata = {
+  title: "Nexus School OS | Bank-Grade School Management for Nigerian Private Schools",
+  description:
+    "Nexus School OS is the offline-first school management system built for premium Nigerian private schools. Automate grading, generate 500 report cards in 4 seconds, and eliminate grade manipulation — with zero internet dependency.",
+  keywords: [
+    "school management software Nigeria",
+    "offline school system Nigeria",
+    "report card generator Nigeria",
+    "private school software Lagos",
+    "school grading system Nigeria",
+    "Nexus School OS",
+    "edtech Nigeria",
+  ],
+  authors: [{ name: "Bright Atsighi", url: "https://brytebee.com" }],
+  openGraph: {
+    title: "Nexus School OS | Bank-Grade School Management for Nigerian Private Schools",
+    description:
+      "Automate grading, generate 500 report cards in 4 seconds, and eliminate grade manipulation — with zero internet dependency.",
+    url: "https://brytebee.com/nexus-school-os",
+    siteName: "Nexus School OS",
+    type: "website",
+    locale: "en_NG",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nexus School OS | Offline-First School Management for Nigeria",
+    description:
+      "Process 500 report cards in 4 seconds. No internet required. Built for premium Nigerian private schools.",
+    creator: "@brytebee",
+  },
+  alternates: {
+    canonical: "https://brytebee.com/nexus-school-os",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 // ── Icons ───────────────────────────────────────────────────────────
 const WhatsAppIcon = () => (

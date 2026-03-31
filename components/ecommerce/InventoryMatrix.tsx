@@ -2,87 +2,123 @@
 
 import { SKU } from "@/lib/ecommerce/simulation";
 
+// Renders 3 colored LED squares representing stock health visually
+function StockLEDs({ stock }: { stock: number }) {
+  // Three tiers: high (>100), medium (21–100), low (≤20)
+  const high = stock > 100;
+  const medium = stock > 20 && stock <= 100;
+  const low = stock <= 20;
+
+  const dots = [
+    { active: high || medium || low, color: high ? "bg-electric-lime shadow-[0_0_4px_#ccff00]" : medium ? "bg-yellow-400 shadow-[0_0_4px_#facc15]" : "bg-red-500 shadow-[0_0_4px_#ef4444]" },
+    { active: high || medium, color: high ? "bg-electric-lime shadow-[0_0_4px_#ccff00]" : medium ? "bg-yellow-400 shadow-[0_0_4px_#facc15]" : "bg-white/10" },
+    { active: high, color: high ? "bg-electric-lime shadow-[0_0_4px_#ccff00]" : "bg-white/10" },
+  ];
+
+  return (
+    <div className="flex items-center gap-1">
+      {dots.map((dot, i) => (
+        <div
+          key={i}
+          className={`w-2.5 h-2.5 rounded-[2px] ${dot.active ? dot.color : "bg-white/10"}`}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function InventoryMatrix({ skus }: { skus: SKU[] }) {
   return (
-    <div className="bg-[#050505] border border-white/5 rounded-3xl p-6 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
-        <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-gray-400">
-           Heuristic Inventory Matrix
-        </h3>
-        <span className="text-[9px] font-mono text-electric-lime px-2 py-1 bg-electric-lime/10">
-           ACTIVE SCAN
-        </span>
+    <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl h-full flex flex-col min-h-0">
+      {/* Header */}
+      <div className="shrink-0 flex items-center gap-2 px-5 py-4 border-b border-white/10">
+        <div className="w-1 h-4 bg-electric-lime rounded-full" />
+        <h3 className="text-white text-sm font-semibold tracking-wide">Inventory Matrix</h3>
       </div>
 
-      <div className="overflow-x-auto w-full flex-1 custom-scrollbar">
-        <table className="w-full text-left font-mono">
+      {/* Scrollable table */}
+      <div className="flex-1 overflow-auto min-h-0 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
+        <table className="w-full text-left font-mono text-[11px] border-collapse">
           <thead>
-            <tr className="text-[9px] uppercase tracking-[0.2em] text-gray-600 border-b border-white/10">
-              <th className="pb-4 font-black w-2/5">SKU / Designation</th>
-              <th className="pb-4 font-black">Velocity</th>
-              <th className="pb-4 font-black">Stock</th>
-              <th className="pb-4 font-black w-1/4">Competitive Intel</th>
-              <th className="pb-4 font-black text-right">Health Score</th>
+            <tr className="text-gray-500 text-[10px] uppercase tracking-wider border-b border-white/10 sticky top-0 bg-[#0a0a0a] z-10">
+              <th className="px-5 py-3 font-normal">Product</th>
+              <th className="px-3 py-3 font-normal">Stock Level</th>
+              <th className="px-3 py-3 font-normal">Velocity</th>
+              <th className="px-3 py-3 font-normal">Health</th>
+              <th className="px-3 py-3 font-normal text-right">Optimal Price</th>
+              <th className="px-5 py-3 font-normal text-right">Current Price</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5 text-[11px] text-gray-300">
-            {skus.sort((a,b) => b.healthScore - a.healthScore).map((sku) => (
-              <tr key={sku.id} className="hover:bg-white/[0.02] transition-colors group">
-                <td className="py-5 font-sans">
-                  <div className="flex flex-col gap-1">
-                    <span className="font-bold text-white tracking-tight">{sku.name}</span>
-                    <span className="text-[9px] font-mono text-gray-600 tracking-widest uppercase">
-                       {sku.id} // {sku.category}
-                    </span>
-                  </div>
-                </td>
-                
-                <td className="py-5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-electric-lime">+{sku.velocity}</span>
-                    <span className="text-[8px] text-gray-600">REQ/m</span>
-                  </div>
-                </td>
-                
-                <td className="py-5">
-                  <span className={`${sku.stock < 10 ? 'text-red-500 font-bold' : 'text-gray-300'}`}>
-                    {sku.stock} UNITS
-                  </span>
-                </td>
-                
-                <td className="py-5">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-2">
-                       <span className="text-gray-500 line-through text-[9px]">
-                         {sku.competitorPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
-                       </span>
-                       <span className={`font-bold ${sku.price < sku.competitorPrice ? 'text-electric-lime' : sku.price > sku.competitorPrice ? 'text-red-500' : 'text-gray-300'}`}>
-                         {sku.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
-                       </span>
-                    </div>
-                    {sku.competitorStockStatus === 'OUT_OF_STOCK' && (
-                       <span className="text-[8px] font-black uppercase text-electric-lime px-1.5 py-0.5 border border-electric-lime/30 inline-block w-fit">
-                         OPP: ADV. OUT OF STOCK
-                       </span>
-                    )}
-                  </div>
-                </td>
+          <tbody>
+            {skus.map((sku, idx) => {
+              const velLabel = sku.velocity > 100 ? "High" : sku.velocity < 50 ? "Low" : "Medium";
+              const velColor =
+                sku.velocity > 100
+                  ? "text-electric-lime"
+                  : sku.velocity < 50
+                  ? "text-red-400"
+                  : "text-yellow-400";
 
-                <td className="py-5 text-right w-24">
-                  <div className="flex flex-col items-end gap-1.5 w-full">
-                     <span className={`font-black text-lg ${sku.healthScore > 75 ? 'text-electric-lime' : sku.healthScore > 50 ? 'text-orange-500' : 'text-red-500'}`}>
-                       {sku.healthScore}
-                     </span>
-                     <div className="w-full h-1 bg-white/5 relative overflow-hidden flex justify-end">
-                        <div 
-                          className={`h-full ${sku.healthScore > 75 ? 'bg-electric-lime' : sku.healthScore > 50 ? 'bg-orange-500' : 'bg-red-500'}`}
-                          style={{ width: `${sku.healthScore}%` }}
-                        />
-                     </div>
-                  </div>
-                </td>
-              </tr>
-            ))}
+              let healthLabel = "Strong";
+              let healthClasses = "text-electric-lime border-electric-lime/40 bg-electric-lime/10";
+              if (sku.healthScore >= 80) {
+                healthLabel = "Strong";
+                healthClasses = "text-electric-lime border-electric-lime/40 bg-electric-lime/10";
+              } else if (sku.healthScore >= 60) {
+                healthLabel = "Healthy";
+                healthClasses = "text-green-400 border-green-400/40 bg-green-400/10";
+              } else if (sku.healthScore >= 40) {
+                healthLabel = "Moderate";
+                healthClasses = "text-yellow-400 border-yellow-400/40 bg-yellow-400/10";
+              } else if (sku.healthScore >= 20) {
+                healthLabel = "At Risk";
+                healthClasses = "text-orange-400 border-orange-400/40 bg-orange-400/10";
+              } else {
+                healthLabel = "Critical";
+                healthClasses = "text-red-500 border-red-500/40 bg-red-500/10";
+              }
+
+              return (
+                <tr
+                  key={sku.id}
+                  className={`border-b border-white/[0.05] hover:bg-white/[0.03] transition-colors ${
+                    idx % 2 === 0 ? "" : "bg-white/[0.01]"
+                  }`}
+                >
+                  {/* Product name */}
+                  <td className="px-5 py-3.5 text-gray-200 font-sans font-medium text-[12px]">
+                    {sku.name}
+                  </td>
+
+                  {/* Stock LEDs */}
+                  <td className="px-3 py-3.5">
+                    <StockLEDs stock={sku.stock} />
+                  </td>
+
+                  {/* Velocity */}
+                  <td className={`px-3 py-3.5 font-semibold ${velColor}`}>
+                    {velLabel}
+                  </td>
+
+                  {/* Health pill */}
+                  <td className="px-3 py-3.5">
+                    <span className={`px-2.5 py-0.5 rounded border text-[10px] font-bold tracking-wide ${healthClasses}`}>
+                      {healthLabel}
+                    </span>
+                  </td>
+
+                  {/* Optimal Price */}
+                  <td className="px-3 py-3.5 text-right text-gray-400">
+                    ${sku.optimalPrice.toFixed(2)}
+                  </td>
+
+                  {/* Current Price */}
+                  <td className="px-5 py-3.5 text-right text-white font-bold">
+                    ${sku.price.toFixed(2)}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

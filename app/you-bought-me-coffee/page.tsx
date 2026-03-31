@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Payment Successful | Bright Atsighi",
+  title: "Payment Successful",
   description: "Thank you for your support!",
 };
 

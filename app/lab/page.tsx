@@ -18,8 +18,18 @@ const labs = [
     ],
     accent: "#008751",
     icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+        />
       </svg>
     ),
   },
@@ -32,7 +42,13 @@ const labs = [
     title: "Intelligence Platform",
     description:
       "An automated editorial intelligence system. The Architect-Agent drafts reports from news hooks, routes them through a human approval layer, and publishes to a dossier-style feed. Covers esports, fintech, policy, and AI.",
-    tags: ["Architect-Agent", "Editorial AI", "Content Pipeline", "Prisma", "Next.js"],
+    tags: [
+      "Architect-Agent",
+      "Editorial AI",
+      "Content Pipeline",
+      "Prisma",
+      "Next.js",
+    ],
     metrics: [
       { label: "Agent", value: "Architect-Agent" },
       { label: "Output", value: "Dossier briefs" },
@@ -40,8 +56,18 @@ const labs = [
     ],
     accent: "#ccff00",
     icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+        />
       </svg>
     ),
   },
@@ -62,8 +88,18 @@ const labs = [
     ],
     accent: "#ccff00",
     icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M13 10V3L4 14h7v7l9-11h-7z"
+        />
       </svg>
     ),
   },
@@ -84,8 +120,18 @@ const labs = [
     ],
     accent: "#008751",
     icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+        />
       </svg>
     ),
   },
@@ -110,13 +156,28 @@ export default function LabIndexPage() {
       <header className="sticky top-0 z-50 border-b border-white/[0.05] bg-black/70 backdrop-blur-2xl px-6 md:px-12 py-5">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a href="/" className="flex items-center gap-2 text-gray-600 hover:text-white transition-colors group">
+            <a
+              href="/admin"
+              className="flex items-center gap-2 text-gray-600 hover:text-white transition-colors group"
+            >
               <div className="w-7 h-7 rounded-lg border border-white/[0.06] flex items-center justify-center group-hover:border-white/20 transition-colors">
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
               </div>
-              <span className="font-mono text-[9px] uppercase tracking-widest hidden md:block">Portfolio</span>
+              <span className="font-mono text-[9px] uppercase tracking-widest hidden md:block">
+                Admin
+              </span>
             </a>
             <div className="w-px h-5 bg-white/[0.06]" />
             <div>
@@ -147,12 +208,16 @@ export default function LabIndexPage() {
             </span>
           </div>
           <h2 className="text-[48px] md:text-[64px] font-black italic tracking-[-0.04em] leading-[0.9] text-white">
-            RUNNING<br />SYSTEMS,<br />NOT MOCKUPS.
+            RUNNING
+            <br />
+            SYSTEMS,
+            <br />
+            NOT MOCKUPS.
           </h2>
           <p className="text-[16px] text-gray-500 leading-relaxed max-w-xl font-medium">
-            Every system here solves a real problem for a real industry.
-            Built in production-grade TypeScript, running on live data,
-            fully inspectable in the browser.
+            Every system here solves a real problem for a real industry. Built
+            in production-grade TypeScript, running on live data, fully
+            inspectable in the browser.
           </p>
         </div>
 
@@ -189,7 +254,10 @@ export default function LabIndexPage() {
                   <div className="flex items-start justify-between">
                     <div
                       className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: `${lab.accent}18`, color: lab.accent }}
+                      style={{
+                        background: `${lab.accent}18`,
+                        color: lab.accent,
+                      }}
                     >
                       {lab.icon}
                     </div>
@@ -255,8 +323,18 @@ export default function LabIndexPage() {
                     {lab.href && (
                       <div className="flex items-center gap-1.5 font-mono text-[9px] font-black uppercase tracking-[0.15em] text-gray-500 group-hover:text-white transition-colors shrink-0">
                         Enter
-                        <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        <svg
+                          className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                          />
                         </svg>
                       </div>
                     )}

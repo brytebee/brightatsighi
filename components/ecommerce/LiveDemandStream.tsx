@@ -6,69 +6,78 @@ import { EcommerceEvent, SKU } from "@/lib/ecommerce/simulation";
 export default function LiveDemandStream({ events, skus }: { events: EcommerceEvent[], skus: SKU[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Auto-scroll to top since newest events are prepended
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      scrollRef.current.scrollTop = 0;
     }
   }, [events]);
 
-  const getEventStyle = (type: string) => {
-    switch (type) {
-      case "PAGE_VIEW": return "text-gray-500 border-white/5";
-      case "ADD_TO_CART": return "text-blue-400 border-blue-400/20";
-      case "CHECKOUT": return "text-electric-lime border-electric-lime/20";
-      case "COMPETITOR_PRICE_DROP": return "text-orange-500 border-orange-500/20";
-      case "COMPETITOR_OUT_OF_STOCK": return "text-purple-400 border-purple-400/20";
-      default: return "text-white border-white/10";
-    }
-  };
-
   return (
-    <div className="flex flex-col h-full bg-[#050505] border border-white/10 rounded-3xl overflow-hidden relative group">
-      <div className="absolute inset-0 bg-linear-to-b from-[#ccff00]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 blur-3xl pointer-events-none" />
-      
+    <div className="flex flex-col h-full bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden">
       {/* Header */}
-      <div className="shrink-0 p-4 border-b border-white/10 bg-black/50 backdrop-blur z-10 flex items-center justify-between">
-        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 flex items-center gap-2">
-           <span className="w-1.5 h-1.5 rounded-full bg-electric-lime animate-pulse" />
-           Velocity Firehose
-        </h3>
-        <span className="text-[9px] font-mono text-gray-600">TCP://EUR-W1:443</span>
+      <div className="shrink-0 flex items-center gap-2 px-5 py-4 border-b border-white/10">
+        <div className="w-1 h-4 bg-electric-lime rounded-full" />
+        <h3 className="text-white text-sm font-semibold tracking-wide">Live Demand Stream</h3>
+        <div className="ml-auto flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-electric-lime animate-pulse" />
+          <span className="text-[9px] font-mono text-electric-lime uppercase tracking-widest">Live</span>
+        </div>
       </div>
 
-      {/* Stream Terminal */}
-      <div ref={scrollRef} className="flex-1 p-4 overflow-y-auto font-mono text-[10px] space-y-3 custom-scrollbar relative z-10">
-        <div className="opacity-50 text-gray-600 pb-2 border-b border-white/5 mb-4">
-          [ SYSTEM INITIATED ] Listening for global e-commerce events...
-        </div>
+      {/* Stream */}
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto min-h-0 px-4 py-3 space-y-0 font-mono text-[11px]
+          [&::-webkit-scrollbar]:w-1
+          [&::-webkit-scrollbar-track]:bg-transparent
+          [&::-webkit-scrollbar-thumb]:bg-white/10
+          [&::-webkit-scrollbar-thumb]:rounded-full"
+      >
         {events.map((event) => {
-           const relatedSku = skus.find(s => s.id === event.skuId);
-           const ts = new Date(event.timestamp).toLocaleTimeString('en-US', { hour12: false, fractionalSecondDigits: 2 });
-           
-           return (
-             <div key={event.id} className={`p-2.5 border-l-2 bg-white/[0.02] flex items-start gap-3 transition-colors ${getEventStyle(event.type)}`}>
-               <span className="opacity-50 min-w-[70px] shrink-0">{ts}</span>
-               <div className="flex flex-col gap-1 w-full">
-                 <div className="flex items-center justify-between w-full">
-                   <span className="font-bold tracking-widest">{event.type}</span>
-                   <span className="text-[8px] opacity-70 border border-current px-1 rounded">{event.skuId.split('-')[1]}</span>
-                 </div>
-                 <span className="text-gray-400 text-[9px] truncate">
-                   {relatedSku?.name || "Unknown SKU"} 
-                   {event.type === 'CHECKOUT' ? ` • ${relatedSku?.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}` : ''}
-                   {event.metadata?.newPrice ? ` • Dropped to $${event.metadata.newPrice}` : ''}
-                 </span>
-               </div>
-             </div>
-           );
+          const ts = new Date(event.timestamp).toLocaleTimeString("en-US", {
+            hour12: false,
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
+
+          const msg = event.metadata?.message ?? `${event.type} — ${event.skuId}`;
+          const isHighlight = event.metadata?.highlight === true;
+
+          // Split message on the dollar amount for targeted coloring
+          const dollarIdx = msg.indexOf("$");
+          const beforeDollar = dollarIdx >= 0 ? msg.slice(0, dollarIdx) : msg;
+          const dollarPart = dollarIdx >= 0 ? msg.slice(dollarIdx) : "";
+
+          return (
+            <div key={event.id} className="group">
+              <div className="flex items-start gap-2 py-2 px-1 rounded hover:bg-white/[0.03] transition-colors">
+                {/* Arrow */}
+                <span className={`shrink-0 mt-px ${isHighlight ? "text-electric-lime" : "text-gray-600"}`}>
+                  ▶
+                </span>
+
+                {/* Timestamp */}
+                <span className="shrink-0 text-gray-500">[{ts}]</span>
+
+                {/* Message */}
+                <span className={isHighlight ? "text-gray-300" : "text-gray-500"}>
+                  {beforeDollar}
+                  {dollarPart && (
+                    <span className="text-electric-lime font-bold drop-shadow-[0_0_6px_rgba(204,255,0,0.7)]">
+                      {dollarPart}
+                    </span>
+                  )}
+                </span>
+              </div>
+
+              {/* Dashed separator */}
+              <div className="border-b border-dashed border-white/[0.06] mx-1" />
+            </div>
+          );
         })}
       </div>
-      
-      {/* Grid overlay for aesthetic */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-[0.02]"
-        style={{ backgroundImage: "linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)", backgroundSize: "16px 16px" }}
-      />
     </div>
   );
 }
