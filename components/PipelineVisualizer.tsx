@@ -1,6 +1,6 @@
 "use client";
 
-import { useObject } from "@ai-sdk/react";
+import { experimental_useObject } from "@ai-sdk/react";
 import { z } from "zod";
 import { useEffect, useRef, useState } from "react";
 
@@ -34,7 +34,7 @@ export default function PipelineVisualizer({
   documentText: string;
   documentType: string;
 }) {
-  const { object, stream, submit, isLoading, error } = useObject<ExtractedData>({
+  const { object, submit, isLoading, error } = experimental_useObject({
     api: "/api/pipeline/extract",
     schema,
   });
@@ -169,7 +169,7 @@ export default function PipelineVisualizer({
                   </div>
                   {object.riskAssessment.keyRiskFactors && object.riskAssessment.keyRiskFactors.length > 0 && (
                      <ul className="space-y-2">
-                       {object.riskAssessment.keyRiskFactors.map((rf: string, i: number) => (
+                       {object.riskAssessment.keyRiskFactors.map((rf: any, i: number) => (
                          <li key={i} className="text-xs text-gray-400 flex items-start gap-2">
                            <span className="text-[#ccff00] mt-0.5">↳</span> {rf}
                          </li>
