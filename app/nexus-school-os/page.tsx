@@ -6,7 +6,8 @@ import { portfolioData } from "@/lib/data";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
-  title: "Nexus School OS | Bank-Grade School Management for Nigerian Private Schools",
+  title:
+    "Nexus School OS | Bank-Grade School Management for Nigerian Private Schools",
   description:
     "Nexus School OS is the offline-first school management system built for premium Nigerian private schools. Automate grading, generate 500 report cards in 4 seconds, and eliminate grade manipulation — with zero internet dependency.",
   keywords: [
@@ -20,7 +21,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Bright Atsighi", url: "https://brytebee.com" }],
   openGraph: {
-    title: "Nexus School OS | Bank-Grade School Management for Nigerian Private Schools",
+    title:
+      "Nexus School OS | Bank-Grade School Management for Nigerian Private Schools",
     description:
       "Automate grading, generate 500 report cards in 4 seconds, and eliminate grade manipulation — with zero internet dependency.",
     url: "https://brytebee.com/nexus-school-os",
@@ -524,7 +526,9 @@ export default function NexusLandingPage() {
                 <div className="mt-auto pt-6 border-t border-white/[0.07]">
                   <p className="text-[12px] text-[#8C9EFF]/55 mb-4">
                     One-time Setup:{" "}
-                    <span className="text-white/80 font-semibold">₦50,000</span>
+                    <span className="text-white/80 font-semibold">
+                      ₦100,000
+                    </span>
                   </p>
                   <Link
                     href={whatsapp}
@@ -586,7 +590,7 @@ export default function NexusLandingPage() {
                   <p className="text-[12px] text-[#8C9EFF]/55 mb-4">
                     One-time Setup:{" "}
                     <span className="text-white/80 font-semibold">
-                      ₦100,000
+                      ₦150,000
                     </span>
                   </p>
                   <Link
@@ -666,8 +670,9 @@ export default function NexusLandingPage() {
               <div className="inline-flex items-center gap-3 rounded-full border border-[#00E676]/25 bg-[#00E676]/[0.07] px-6 py-3 text-[13px] text-[#00E676] font-semibold backdrop-blur-md">
                 <span className="text-[18px]">👑</span>
                 <span>
-                  <strong>Founder Cohort — First 10 schools only:</strong> 50%
-                  Setup fee discount. Lock in your rate before public launch.
+                  <strong>Founder Cohort — First 10 schools only:</strong>{" "}
+                  20-30% (plan-based) Setup fee and training discount. Lock in
+                  your rate before public launch.
                 </span>
               </div>
             </div>
