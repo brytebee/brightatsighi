@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Metadata } from "next";
 import { portfolioData } from "@/lib/data";
 import ScrollReveal from "@/components/ScrollReveal";
+import ROICalculator from "@/components/nexus/ROICalculator";
 
 export const metadata: Metadata = {
   title:
@@ -144,9 +145,9 @@ export default function NexusLandingPage() {
                     className="reveal-item text-[52px] font-black leading-[1.05] tracking-[-0.03em] text-white sm:text-[68px] lg:text-[82px] xl:text-[96px]"
                     style={{ transitionDelay: "80ms" }}
                   >
-                    Bank-Grade
+                    Command &
                     <br />
-                    Security.{" "}
+                    Control.{" "}
                     <span className="bg-gradient-to-r from-white via-[#c7cfff] to-[#8C9EFF] bg-clip-text text-transparent">
                       Zero Internet
                       <br className="hidden sm:block" /> Required.
@@ -156,9 +157,9 @@ export default function NexusLandingPage() {
 
                 <p className="max-w-[480px] text-[17px] leading-[1.7] text-[#8C9EFF]/90 nexus-fade-in nexus-fade-in-delay-3">
                   Nexus School OS is the offline-first nervous system for
-                  premium private schools. End &ldquo;Grade Expo.&rdquo;
+                  premium private schools. Take absolute command of your records.
                   Eliminate your printing budget. Process 500 report cards in
-                  exactly 4 seconds — with zero internet dependency.
+                  exactly 4 seconds — without the internet.
                 </p>
 
                 <div className="flex flex-col gap-3 nexus-fade-in nexus-fade-in-delay-4">
@@ -196,6 +197,26 @@ export default function NexusLandingPage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Section 1.5: ROI Auditor ────────────────────────── */}
+        <section className="py-24 bg-[#05081A] relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <div data-reveal className="reveal-item mb-16 text-center">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#8C9EFF] uppercase">
+                The Financial Audit
+              </span>
+              <h2 className="mt-3 text-[32px] font-black leading-[1.1] tracking-[-0.03em] sm:text-[42px]">
+                Manual Grading is Leaking Your Revenue.
+                <br />
+                <span className="text-[#00E676]">Calculate your recovery.</span>
+              </h2>
+            </div>
+            <div data-reveal className="reveal-item" style={{ transitionDelay: "100ms" }}>
+              <ROICalculator />
             </div>
           </div>
         </section>
@@ -283,6 +304,56 @@ export default function NexusLandingPage() {
                   </p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── New Section: Institutional Sovereignty ─────────── */}
+        <section className="py-24 sm:py-32 bg-gradient-to-b from-[#05081A] to-black relative">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 flex flex-col items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
+              <div>
+                <span className="text-[11px] font-bold tracking-[0.2em] text-[#8C9EFF] uppercase">
+                  Institutional Sovereignty
+                </span>
+                <h2 className="mt-4 text-[40px] font-black leading-[1.1] tracking-[-0.03em] sm:text-[52px]">
+                  Your Data. Your Campus.
+                  <br />
+                  <span className="text-[#00E676]">Total Control.</span>
+                </h2>
+                <div className="mt-8 space-y-8">
+                  <div className="flex gap-4 border-l-2 border-[#1A237E] pl-6 py-2 bg-gradient-to-r from-[#1A237E]/5 to-transparent">
+                    <div className="mt-1 h-6 w-6 shrink-0 rounded-full bg-[#1A237E]/20 flex items-center justify-center text-[#8C9EFF]">
+                      <CheckIcon />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white uppercase tracking-tight">Zero-Knowledge Backups</h4>
+                      <p className="text-sm text-[#8C9EFF]/70 leading-relaxed">Encrypted local backups that even we cannot access. Your financial and academic records remain entirely your property.</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4 border-l-2 border-[#00E676]/30 pl-6 py-2 bg-gradient-to-r from-[#00E676]/5 to-transparent">
+                    <div className="mt-1 h-6 w-6 shrink-0 rounded-full bg-[#00E676]/20 flex items-center justify-center text-[#00E676]">
+                      <CheckIcon />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white uppercase tracking-tight">Local-to-Cloud Shield</h4>
+                      <p className="text-sm text-[#8C9EFF]/70 leading-relaxed">Conduct exams and grading 100% offline. Sync to your private cloud vault only when you choose to connect, via encrypted handshake.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="relative aspect-square lg:aspect-video rounded-[32px] border border-white/5 bg-white/[0.02] flex items-center justify-center overflow-hidden shadow-2xl">
+                <div className="absolute inset-0 bg-[#1A237E]/10 blur-[100px] rounded-full scale-150 animate-pulse" />
+                <div className="relative z-10 text-center p-8 backdrop-blur-sm border border-white/10 rounded-3xl bg-white/[0.01]">
+                  <div className="mb-6 inline-flex h-24 w-24 items-center justify-center rounded-[2rem] bg-[#05081A] border border-white/10 shadow-[0_0_50px_rgba(26,35,126,0.5)]">
+                    <svg className="h-12 w-12 text-[#00E676]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-black text-white tracking-tighter">Security Audit Verified</h3>
+                  <p className="mt-2 text-sm text-[#8C9EFF]/60">Nexus Architecture uses military-grade SQLCipher <br /> and hardware-bound biometric authentication.</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -471,46 +542,46 @@ export default function NexusLandingPage() {
           <div className="mx-auto max-w-7xl px-5 sm:px-8 relative z-10">
             <div className="mb-16 sm:mb-20 text-center">
               <span className="text-[11px] font-bold tracking-[0.2em] text-[#00E676] uppercase">
-                Transparent Pricing
+                Institutional Investment
               </span>
               <h2 className="mt-3 text-[36px] font-black leading-[1.1] tracking-[-0.03em] sm:text-[48px] lg:text-[52px]">
                 A Partnership That Grows With You.
               </h2>
               <p className="mt-4 text-[17px] leading-[1.7] text-[#8C9EFF]/80 max-w-md mx-auto">
-                Pay per student, per term — just like a school should.
+                Pay per student, per term — aligning our success directly with yours.
               </p>
             </div>
 
-            {/* Grid — uses padding to give Gold space to breathe */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:items-center md:px-8 lg:px-0">
               {/* Silver */}
-              <div className="flex flex-col gap-7 rounded-[28px] border border-white/[0.09] bg-white/3 p-10 backdrop-blur-xl h-full">
+              <div className="flex flex-col gap-7 rounded-[28px] border border-white/[0.09] bg-white/3 p-10 backdrop-blur-xl h-full transition-all hover:border-white/20">
                 <div>
                   <p className="text-[11px] font-bold tracking-[0.18em] text-[#8C9EFF] uppercase mb-2">
-                    Silver
+                    Silver School
                   </p>
-                  <h3 className="text-[22px] font-bold tracking-[-0.02em] leading-snug">
-                    For smaller schools finding their footing.
+                  <h3 className="text-[20px] font-bold tracking-[-0.02em] leading-snug">
+                    Result Processing Excellence
                   </h3>
                 </div>
                 <div>
                   <div className="flex items-baseline gap-1.5">
                     <span className="text-[42px] font-black tracking-[-0.04em]">
-                      ₦250
+                      ₦300
                     </span>
                     <span className="text-[13px] text-[#8C9EFF]/70">
-                      /student/term
+                      /student/S3
                     </span>
                   </div>
-                  <p className="mt-1 text-[12px] text-[#8C9EFF]/55 italic">
-                    e.g. 150 students = ₦37,500/term
+                  <p className="mt-1 text-[10px] uppercase font-bold tracking-widest text-[#8C9EFF]/40">
+                    Sovereign Support Shield
                   </p>
                 </div>
                 <ul className="flex flex-col gap-2.5 text-[14px] text-[#8C9EFF]/80">
                   {[
-                    "Full offline grading suite",
-                    "PDF report card generation",
-                    "Biometric teacher security",
+                    "Grading & Ranking Engine",
+                    "Branded Report Card Generation",
+                    "Official School Stamp Module",
+                    "Standard Result Templates",
                   ].map((f) => (
                     <li key={f} className="flex items-center gap-2.5">
                       <span className="text-[#00E676]">
@@ -519,41 +590,39 @@ export default function NexusLandingPage() {
                       {f}
                     </li>
                   ))}
-                  <li className="flex items-center gap-2.5 text-white font-semibold mt-1">
-                    <span>🏫</span>Schools under 200 students
+                  <li className="flex items-center gap-2.5 text-white/50 font-medium text-[12px] mt-2 italic">
+                    Focus: Essential Academic Operations
                   </li>
                 </ul>
                 <div className="mt-auto pt-6 border-t border-white/[0.07]">
-                  <p className="text-[12px] text-[#8C9EFF]/55 mb-4">
-                    One-time Setup:{" "}
-                    <span className="text-white/80 font-semibold">
-                      ₦100,000
-                    </span>
+                  <p className="text-[11px] font-bold tracking-widest uppercase text-[#8C9EFF]/40 mb-3">
+                    Institutional Onboarding (IDT)
                   </p>
+                  <p className="text-[20px] font-black text-white/90 mb-4">₦100,000</p>
                   <Link
                     href={whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full rounded-full border border-white/[0.15] py-3 text-center text-[14px] font-semibold text-white/80 transition-all hover:border-[#8C9EFF]/50 hover:text-[#8C9EFF]"
                   >
-                    Book a Demo
+                    Deploy Silver
                   </Link>
                 </div>
               </div>
 
               {/* Gold — Most Popular */}
-              <div className="nexus-gold-pulse relative flex flex-col gap-7 rounded-[32px] border border-[#1A237E] bg-[#0d1240] p-10 backdrop-blur-xl md:scale-[1.05] h-full">
+              <div className="nexus-gold-pulse relative flex flex-col gap-7 rounded-[32px] border border-[#1A237E] bg-[#0d1240] p-10 backdrop-blur-xl md:scale-[1.05] h-full shadow-[0_0_60px_rgba(26,35,126,0.3)]">
                 <div className="absolute -top-[18px] left-1/2 -translate-x-1/2 whitespace-nowrap">
                   <span className="rounded-full border border-[#8C9EFF]/30 bg-[#1A237E] px-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase text-white shadow-lg">
-                    ⭐ Most Popular
+                    ⭐ THE CONNECTED SCHOOL
                   </span>
                 </div>
                 <div>
                   <p className="text-[11px] font-bold tracking-[0.18em] text-[#8C9EFF] uppercase mb-2">
-                    Gold
+                    Gold School
                   </p>
-                  <h3 className="text-[22px] font-bold tracking-[-0.02em] leading-snug">
-                    For established schools ready to scale.
+                  <h3 className="text-[20px] font-bold tracking-[-0.02em] leading-snug">
+                    Parental Engagement & Mobility
                   </h3>
                 </div>
                 <div>
@@ -562,18 +631,20 @@ export default function NexusLandingPage() {
                       ₦500
                     </span>
                     <span className="text-[13px] text-[#8C9EFF]/70">
-                      /student/term
+                      /student/S3
                     </span>
                   </div>
-                  <p className="mt-1 text-[12px] text-[#8C9EFF]/55 italic">
-                    e.g. 400 students = ₦200,000/term
+                  <p className="mt-1 text-[10px] uppercase font-bold tracking-widest text-[#8C9EFF]/40 text-[#8C9EFF]/60">
+                    Sovereign Support Shield
                   </p>
                 </div>
                 <ul className="flex flex-col gap-2.5 text-[14px] text-[#8C9EFF]/80">
                   {[
                     "Everything in Silver",
-                    "Priority on-site technical support",
-                    "Eco-Guardian thermal monitoring",
+                    "Parental Access Portal",
+                    "Mobile Admin Command App",
+                    "Fee Management Ledger",
+                    "Digital Assignment Hub",
                   ].map((f) => (
                     <li key={f} className="flex items-center gap-2.5">
                       <span className="text-[#00E676]">
@@ -582,54 +653,56 @@ export default function NexusLandingPage() {
                       {f}
                     </li>
                   ))}
-                  <li className="flex items-center gap-2.5 text-white font-semibold mt-1">
-                    <span>🏫</span>200–500 students
+                  <li className="flex items-center gap-2.5 text-[#00E676] font-bold text-[12px] mt-2 italic">
+                    Focus: Satisfaction & Revenue Tracking
                   </li>
                 </ul>
                 <div className="mt-auto pt-6 border-t border-white/[0.1]">
-                  <p className="text-[12px] text-[#8C9EFF]/55 mb-4">
-                    One-time Setup:{" "}
-                    <span className="text-white/80 font-semibold">
-                      ₦150,000
-                    </span>
+                  <p className="text-[11px] font-bold tracking-widest uppercase text-[#8C9EFF]/40 mb-3">
+                    Institutional Onboarding (IDT)
                   </p>
+                  <p className="text-[20px] font-black text-white/90 mb-4">₦150,000</p>
                   <Link
                     href={whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full rounded-full bg-[#1A237E] py-3 text-center text-[14px] font-bold text-white transition-all hover:bg-[#232db0] hover:shadow-[0_0_30px_rgba(26,35,126,0.5)]"
                   >
-                    Book a Demo
+                    Upgrade to Gold
                   </Link>
                 </div>
               </div>
 
               {/* Diamond */}
-              <div className="flex flex-col gap-7 rounded-[28px] border border-white/[0.09] bg-white/3 p-10 backdrop-blur-xl h-full">
+              <div className="flex flex-col gap-7 rounded-[28px] border border-white/[0.09] bg-white/3 p-10 backdrop-blur-xl h-full transition-all hover:border-white/20">
                 <div>
                   <p className="text-[11px] font-bold tracking-[0.18em] text-[#8C9EFF] uppercase mb-2">
-                    Diamond
+                    Diamond School
                   </p>
-                  <h3 className="text-[22px] font-bold tracking-[-0.02em] leading-snug">
-                    For multi-campus schools and school groups.
+                  <h3 className="text-[20px] font-bold tracking-[-0.02em] leading-snug">
+                    Intelligence & Exam Sovereignty
                   </h3>
                 </div>
                 <div>
                   <div className="flex items-baseline gap-1.5">
                     <span className="text-[42px] font-black tracking-[-0.04em]">
-                      Custom
+                      ₦1,000
+                    </span>
+                    <span className="text-[13px] text-[#8C9EFF]/70">
+                      /student/S3
                     </span>
                   </div>
-                  <p className="mt-1 text-[12px] text-[#8C9EFF]/55 italic">
-                    Pricing per quote — built around your school group.
+                  <p className="mt-1 text-[10px] uppercase font-bold tracking-widest text-[#8C9EFF]/40">
+                    Sovereign Support Shield
                   </p>
                 </div>
                 <ul className="flex flex-col gap-2.5 text-[14px] text-[#8C9EFF]/80">
                   {[
                     "Everything in Gold",
-                    "Multi-campus sync",
-                    "Dedicated account manager",
-                    "Custom API integrations",
+                    "Offline Local CBT (Zero Internet)",
+                    "Exam Analytics & Success Radar",
+                    "Encrypted Google Drive Backups",
+                    "Multi-Campus Central Hub",
                   ].map((f) => (
                     <li key={f} className="flex items-center gap-2.5">
                       <span className="text-[#00E676]">
@@ -638,43 +711,59 @@ export default function NexusLandingPage() {
                       {f}
                     </li>
                   ))}
-                  <li className="flex items-center gap-2.5 text-white font-semibold mt-1">
-                    <span>🏫</span>500+ students / multiple branches
+                  <li className="flex items-center gap-2.5 text-purple-400 font-bold text-[12px] mt-2 italic">
+                    Focus: Academic Dominance & Scale
                   </li>
                 </ul>
                 <div className="mt-auto pt-6 border-t border-white/[0.07]">
-                  <p className="text-[12px] text-[#8C9EFF]/55 mb-4">
-                    One-time Setup:{" "}
-                    <span className="text-white/80 font-semibold">
-                      From ₦250,000
-                    </span>
+                  <p className="text-[11px] font-bold tracking-widest uppercase text-[#8C9EFF]/40 mb-3">
+                    Institutional Onboarding (IDT)
                   </p>
+                  <p className="text-[20px] font-black text-white/90 mb-4">₦250,000</p>
                   <Link
                     href={whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full rounded-full border border-white/[0.15] py-3 text-center text-[14px] font-semibold text-white/80 transition-all hover:border-[#8C9EFF]/50 hover:text-[#8C9EFF]"
                   >
-                    Request a Quote
+                    Go Diamond
                   </Link>
                 </div>
               </div>
             </div>
 
             <p className="mt-14 text-center text-[13px] leading-[1.7] text-[#8C9EFF]/55 max-w-xl mx-auto">
-              All plans are payable termly, at the start of school fees
-              collection. Prices are per student enrolled — as your school
-              grows, you stay on the same per-student rate.
+              Sovereign Support Shield (S3) is payable termly at resumption. IDT includes server configuration, biometric pairing, and staff training.
             </p>
             <div className="mt-8 flex justify-center">
               <div className="inline-flex items-center gap-3 rounded-full border border-[#00E676]/25 bg-[#00E676]/[0.07] px-6 py-3 text-[13px] text-[#00E676] font-semibold backdrop-blur-md">
                 <span className="text-[18px]">👑</span>
                 <span>
                   <strong>Founder Cohort — First 10 schools only:</strong>{" "}
-                  20-30% (plan-based) Setup fee and training discount. Lock in
-                  your rate before public launch.
+                  20-30% (plan-based) IDT discount. Lock in your rate before public launch.
                 </span>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Section: The Ownership Question ────────────────── */}
+        <section className="py-24 sm:py-32 bg-[#02040d]">
+          <div className="mx-auto max-w-3xl px-5 sm:px-8 text-center">
+            <h2 className="text-[32px] font-black tracking-[-0.03em] sm:text-[42px] mb-8">
+              &ldquo;Can we just pay once and own it?&rdquo;
+            </h2>
+            <div className="p-8 rounded-[32px] bg-white/[0.03] border border-white/5 text-left space-y-6">
+              <p className="text-[#8C9EFF]/90 leading-[1.8]">
+                In the digital age, &ldquo;owning&rdquo; static software is a liability. Your hardware evolves, security threats morph, and grading standards shift. 
+              </p>
+              <div className="h-[1px] w-full bg-white/5" />
+              <p className="text-[#8C9EFF]/90 leading-[1.8]">
+                A partnership with Nexus through the <span className="text-white font-bold">Sovereign Support Shield (S3)</span> ensures you aren&rsquo;t just buying code, but a <span className="text-[#00E676] font-bold">Guaranteed Success Protocol</span>. We carry the technical liability for your data integrity and system uptime. 
+              </p>
+              <p className="text-sm font-semibold text-white/70 italic">
+                If a standalone system crashes on Result Day, you are on your own. With S3, we are in the room with you.
+              </p>
             </div>
           </div>
         </section>
