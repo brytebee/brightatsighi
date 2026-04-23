@@ -157,7 +157,8 @@ export default function NexusLandingPage() {
 
                 <p className="max-w-[480px] text-[17px] leading-[1.7] text-[#8C9EFF]/90 nexus-fade-in nexus-fade-in-delay-3">
                   Nexus School OS is the offline-first nervous system for
-                  premium private schools. Take absolute command of your records.
+                  premium private schools.{" "}
+                  <strong className="text-white">Turn your infrastructure into a revenue-generating asset.</strong>{" "}
                   Eliminate your printing budget. Process 500 report cards in
                   exactly 4 seconds — without the internet.
                 </p>
@@ -352,6 +353,53 @@ export default function NexusLandingPage() {
                   </div>
                   <h3 className="text-2xl font-black text-white tracking-tighter">Security Audit Verified</h3>
                   <p className="mt-2 text-sm text-[#8C9EFF]/60">Nexus Architecture uses military-grade SQLCipher <br /> and hardware-bound biometric authentication.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── New Section: Institutional Revenue Engine ───────── */}
+        <section className="py-24 sm:py-32 bg-white/[0.01] relative overflow-hidden">
+          <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 h-[500px] w-[500px] rounded-full bg-[#00E676] opacity-[0.03] blur-[120px] pointer-events-none" />
+          
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <div data-reveal className="reveal-item mb-16">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#00E676] uppercase">
+                Revenue Generation
+              </span>
+              <h2 className="mt-4 text-[40px] font-black leading-[1.1] tracking-[-0.03em] sm:text-[52px]">
+                From Expense to <span className="text-white">Profit Engine.</span>
+                <br />
+                <span className="text-[#00E676]">Monetize Your Assets.</span>
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div data-reveal className="reveal-item p-8 rounded-[32px] border border-white/[0.05] bg-white/[0.02] hover:border-[#00E676]/30 transition-all group" style={{ transitionDelay: "0ms" }}>
+                <div className="mb-6 h-14 w-14 rounded-2xl bg-[#00E676]/10 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">💰</div>
+                <h3 className="text-xl font-bold mb-3">CBT-as-a-Service</h3>
+                <p className="text-sm text-[#8C9EFF]/70 leading-relaxed mb-6">Host mock exams (JAMB/WAEC/NECO) for external candidates using your existing lab. Set up a professional CBT center in minutes via Zero-Config LAN.</p>
+                <div className="pt-6 border-t border-white/5">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-[#00E676]">Pure Asset Income</span>
+                </div>
+              </div>
+
+              <div data-reveal className="reveal-item p-8 rounded-[32px] border border-white/[0.05] bg-white/[0.02] hover:border-[#8C9EFF]/30 transition-all group" style={{ transitionDelay: "100ms" }}>
+                <div className="mb-6 h-14 w-14 rounded-2xl bg-[#1A237E]/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🤖</div>
+                <h3 className="text-xl font-bold mb-3">Nexus Pulse (WhatsApp)</h3>
+                <p className="text-sm text-[#8C9EFF]/70 leading-relaxed mb-6">Automate fee reminders and payment inquiries. Reduce administrative overhead and accelerate cash flow with frictionless parent engagement.</p>
+                <div className="pt-6 border-t border-white/5">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-[#8C9EFF]">Collection Efficiency</span>
+                </div>
+              </div>
+
+              <div data-reveal className="reveal-item p-8 rounded-[32px] border border-white/[0.05] bg-white/[0.02] hover:border-purple-500/30 transition-all group" style={{ transitionDelay: "200ms" }}>
+                <div className="mb-6 h-14 w-14 rounded-2xl bg-purple-500/10 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">📚</div>
+                <h3 className="text-xl font-bold mb-3">Nexus Notes Marketplace</h3>
+                <p className="text-sm text-[#8C9EFF]/70 leading-relaxed mb-6">Monetize your school&apos;s intellectual property. Sell proprietary study guides and premium curriculum materials directly through the student portal.</p>
+                <div className="pt-6 border-t border-white/5">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-purple-400">IP Monetization</span>
                 </div>
               </div>
             </div>
@@ -566,10 +614,10 @@ export default function NexusLandingPage() {
                 <div>
                   <div className="flex items-baseline gap-1.5">
                     <span className="text-[42px] font-black tracking-[-0.04em]">
-                      ₦300
+                      ₦250
                     </span>
                     <span className="text-[13px] text-[#8C9EFF]/70">
-                      /student/S3
+                      /student/term
                     </span>
                   </div>
                   <p className="mt-1 text-[10px] uppercase font-bold tracking-widest text-[#8C9EFF]/40">
@@ -631,7 +679,7 @@ export default function NexusLandingPage() {
                       ₦500
                     </span>
                     <span className="text-[13px] text-[#8C9EFF]/70">
-                      /student/S3
+                      /student/term
                     </span>
                   </div>
                   <p className="mt-1 text-[10px] uppercase font-bold tracking-widest text-[#8C9EFF]/40 text-[#8C9EFF]/60">
@@ -641,9 +689,9 @@ export default function NexusLandingPage() {
                 <ul className="flex flex-col gap-2.5 text-[14px] text-[#8C9EFF]/80">
                   {[
                     "Everything in Silver",
+                    "WhatsApp Bot 'Nexus Pulse'",
+                    "Verified Student Public Profiles",
                     "Parental Access Portal",
-                    "Mobile Admin Command App",
-                    "Fee Management Ledger",
                     "Digital Assignment Hub",
                   ].map((f) => (
                     <li key={f} className="flex items-center gap-2.5">
@@ -654,7 +702,7 @@ export default function NexusLandingPage() {
                     </li>
                   ))}
                   <li className="flex items-center gap-2.5 text-[#00E676] font-bold text-[12px] mt-2 italic">
-                    Focus: Satisfaction & Revenue Tracking
+                    Focus: Engagement & Branding
                   </li>
                 </ul>
                 <div className="mt-auto pt-6 border-t border-white/[0.1]">
@@ -686,10 +734,10 @@ export default function NexusLandingPage() {
                 <div>
                   <div className="flex items-baseline gap-1.5">
                     <span className="text-[42px] font-black tracking-[-0.04em]">
-                      ₦1,000
+                      ₦750
                     </span>
                     <span className="text-[13px] text-[#8C9EFF]/70">
-                      /student/S3
+                      /student/term
                     </span>
                   </div>
                   <p className="mt-1 text-[10px] uppercase font-bold tracking-widest text-[#8C9EFF]/40">
@@ -699,10 +747,11 @@ export default function NexusLandingPage() {
                 <ul className="flex flex-col gap-2.5 text-[14px] text-[#8C9EFF]/80">
                   {[
                     "Everything in Gold",
+                    "Fee Management & Shield",
+                    "CBT-as-a-Service (Revenue Engine)",
                     "Offline Local CBT (Zero Internet)",
-                    "Exam Analytics & Success Radar",
+                    "Skill Mastery Tracking (IEP Standards)",
                     "Encrypted Google Drive Backups",
-                    "Multi-Campus Central Hub",
                   ].map((f) => (
                     <li key={f} className="flex items-center gap-2.5">
                       <span className="text-[#00E676]">
@@ -712,7 +761,7 @@ export default function NexusLandingPage() {
                     </li>
                   ))}
                   <li className="flex items-center gap-2.5 text-purple-400 font-bold text-[12px] mt-2 italic">
-                    Focus: Academic Dominance & Scale
+                    Focus: Profit & Academic Dominance
                   </li>
                 </ul>
                 <div className="mt-auto pt-6 border-t border-white/[0.07]">
